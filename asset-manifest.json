@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/boxgame/static/css/main.5a66b3f1.chunk.css",
+    "main.js": "/boxgame/static/js/main.eee81e9f.chunk.js",
+    "main.js.map": "/boxgame/static/js/main.eee81e9f.chunk.js.map",
+    "runtime-main.js": "/boxgame/static/js/runtime-main.793811e3.js",
+    "runtime-main.js.map": "/boxgame/static/js/runtime-main.793811e3.js.map",
+    "static/js/2.ff6f30ab.chunk.js": "/boxgame/static/js/2.ff6f30ab.chunk.js",
+    "static/js/2.ff6f30ab.chunk.js.map": "/boxgame/static/js/2.ff6f30ab.chunk.js.map",
+    "index.html": "/boxgame/index.html",
+    "precache-manifest.c96e091bd5a3c4c112d589e958716a6e.js": "/boxgame/precache-manifest.c96e091bd5a3c4c112d589e958716a6e.js",
+    "service-worker.js": "/boxgame/service-worker.js",
+    "static/css/main.5a66b3f1.chunk.css.map": "/boxgame/static/css/main.5a66b3f1.chunk.css.map",
+    "static/js/2.ff6f30ab.chunk.js.LICENSE": "/boxgame/static/js/2.ff6f30ab.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.793811e3.js",
+    "static/js/2.ff6f30ab.chunk.js",
+    "static/css/main.5a66b3f1.chunk.css",
+    "static/js/main.eee81e9f.chunk.js"
+  ]
+}
