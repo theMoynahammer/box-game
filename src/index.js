@@ -18,12 +18,12 @@ function Square(props) {
         <div className="square">
             <img src={props.imgPath}
                 // className="square"
-                onClick={()=> console.log(props)}
+                onClick={() => console.log(props)}
                 alt="nothing loaded :("></img>
-            <button onClick={props.guessHigher}
-                className="top-button">Higher</button>
-            <button onClick={props.guessLower}
-                className="bottom-button">Lower</button>
+            {props.spotIsStillValid ? <button onClick={props.guessHigher}
+                className="top-button">Higher</button> : null}
+            {props.spotIsStillValid ? <button onClick={props.guessLower}
+                className="bottom-button">Lower</button> : null}
         </div>
         // </button>
     );
@@ -38,6 +38,7 @@ class Board extends React.Component {
                 guessLower={() => this.props.guessLower(i)}
                 // displayValue = {this.props.squares[i].displayValue}
                 imgPath={this.props.squares[i].imgPath}
+                spotIsStillValid={this.props.squares[i].spotIsStillValid}
             />
         );
     }
@@ -69,13 +70,13 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            gameState : [],
+            gameState: [],
             boardInitialized: false,
         }
         // {
-            // history: [],
-            // stepNumber: 0,
-            // xIsNext: true
+        // history: [],
+        // stepNumber: 0,
+        // xIsNext: true
         // };
     }
 
@@ -99,38 +100,33 @@ class Game extends React.Component {
     // }
 
 
-    // jumpTo(step) {
-    //     this.setState({
-    //         stepNumber: step,
-    //         xIsNext: (step % 2) === 0
-    //     });
-    // }
-
-    getRandomCardIndex (lengthOfCardsRemainingArray) {
+    getRandomCardIndex(lengthOfCardsRemainingArray) {
         return Math.floor(Math.random() * lengthOfCardsRemainingArray);
     }
 
-    guessHigher (i) {
-        const currentState = {...this.state.gameState[this.state.gameState.length-1]};
+    async guessHigher(i) {
+        const currentState = { ...this.state.gameState[this.state.gameState.length - 1] };
         const newState = cloneDeep(currentState);
-        // console.log(currentState)
         const currentCard = currentState.currentBoard[i];
-        // console.log(currentCard)
         const currentCardStrength = currentCard.strength;
-        const stateFormat = {...this.stateFormat};
+
+        const stateFormat = { ...this.stateFormat };
         const newRandomCardIndex = this.getRandomCardIndex(newState.cardsRemaining.length);
         const chosenCardDetails = newState.cardsRemaining[newRandomCardIndex];
+        this.cardDrawn = `${chosenCardDetails.name ? chosenCardDetails.name : chosenCardDetails.displayValue} of ${chosenCardDetails.suit}`;
+        this.previousCard = `${currentCard.name ? currentCard.name : currentCard.displayValue} of ${currentCard.suit}`;
+        const chosenCardStrength = chosenCardDetails.strength;
+        if (chosenCardStrength === currentCardStrength) this.numberOfSamesies++;
         newState.cardsRemaining.splice(newRandomCardIndex, 1);
-
-        newState.turnNumber ++;
-       
-        newState.currentBoard[i] = chosenCardDetails;
+        newState.turnNumber++;
+        newState.currentBoard[i] = chosenCardStrength > currentCardStrength ? chosenCardDetails : {
+            spotIsStillValid: false,
+            imgPath: `/x-image.png`
+        };
         newState.cardsRemovedFromDeck.push(chosenCardDetails);
-        // this.state.gameState.push(newState);
-        this.setState({
+        await this.setState({
             gameState: [...this.state.gameState, newState]
         });
-
 
         // console.log(this.state.gameState)
         // const cardsRemaining = 
@@ -138,19 +134,43 @@ class Game extends React.Component {
         // const chosenCardDetails = cardsRemaining[indexOfChosenCard];
         // cardsRemaining.splice(indexOfChosenCard, 1);
         // console.log(this.state.gameState)
-// alert(JSON.stringify(this.currentBoard[i]));
+        // alert(JSON.stringify(this.currentBoard[i]));
     }
 
-    guessLower(i){
-        alert('lower')
+    previousCard = null;
+    cardDrawn = null;
+    numberOfSamesies = 0;
+
+    async guessLower(i) {
+        const currentState = { ...this.state.gameState[this.state.gameState.length - 1] };
+        const newState = cloneDeep(currentState);
+        const currentCard = currentState.currentBoard[i];
+        const currentCardStrength = currentCard.strength;
+        const stateFormat = { ...this.stateFormat };
+        const newRandomCardIndex = this.getRandomCardIndex(newState.cardsRemaining.length);
+        const chosenCardDetails = newState.cardsRemaining[newRandomCardIndex];
+        this.cardDrawn = `${chosenCardDetails.name ? chosenCardDetails.name : chosenCardDetails.displayValue} of ${chosenCardDetails.suit}`;
+        this.previousCard = `${currentCard.name ? currentCard.name : currentCard.displayValue} of ${currentCard.suit}`;
+        const chosenCardStrength = chosenCardDetails.strength;
+        if (chosenCardStrength === currentCardStrength) this.numberOfSamesies++;
+        newState.cardsRemaining.splice(newRandomCardIndex, 1);
+        newState.turnNumber++;
+        newState.currentBoard[i] = chosenCardStrength < currentCardStrength ? chosenCardDetails : {
+            spotIsStillValid: false,
+            imgPath: `/x-image.png`
+        };
+        newState.cardsRemovedFromDeck.push(chosenCardDetails);
+        await this.setState({
+            gameState: [...this.state.gameState, newState]
+        });
     }
 
     stateFormat = {
         // const stateFormat = {
-            turnNumber: null,
-            cardsRemaining: null,
-            currentBoard: null,
-            cardsRemovedFromDeck: null,
+        turnNumber: null,
+        cardsRemaining: null,
+        currentBoard: null,
+        cardsRemovedFromDeck: null,
         // }
     }
 
@@ -234,24 +254,32 @@ class Game extends React.Component {
             //     //         xIsNext: !this.state.xIsNext
             //     //     });
             this.state.gameState.push(initialState);
-        // });
-    }
-        if(!this.state.boardInitialized){
-        const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
-        // this.currentBoard = initialBoard;
-        saveInitialState(cardsRemaining, initialBoard);
-        this.state.boardInitialized = true;
+            // });
+        }
+        if (!this.state.boardInitialized) {
+            const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
+            // this.currentBoard = initialBoard;
+            saveInitialState(cardsRemaining, initialBoard);
+            this.state.boardInitialized = true;
         }
         return (
+         
             <div className="game">
+                <div className="infoDiv">
+            <h1>{`The Box Game`}</h1>
+            <h3>Cards remaining: {this.state.gameState[this.state.gameState.length-1].cardsRemaining.length}</h3>
+        <h3>Card drawn: {this.cardDrawn}</h3>
+        <h3>Previous card: {this.previousCard}</h3>
+    <h3>Number of samesies: {this.numberOfSamesies}</h3>
+            </div>
                 <div className="game-board">
                     <Board
                         // squares={current.squares}
-                        squares={this.state.gameState[this.state.gameState.length-1].currentBoard}
+                        squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
                         // squares={this.state.gameState[0].currentBoard}
                         onClick={i => this.handleClick(i)}
-                        guessHigher={i=>this.guessHigher(i)}
-                        guessLower={i=>this.guessLower(i)}
+                        guessHigher={i => this.guessHigher(i)}
+                        guessLower={i => this.guessLower(i)}
                     />
                 </div>
                 {/* <div className="game-info">
