@@ -1,14 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ImageMapper from 'react-image-mapper';
 import './index.css';
 
 function Square(props) {
     return (
         // <button className="square" onClick={props.onClick}>
-        <button className="square" >
-            <img src={props.imgPath} 
-            alt="nothing loaded :("></img>
-        </button>
+        // <button className="square" 
+        // onClick={props.onClick}
+        // >
+        // <ImageMapper src={props.imgPath} 
+        // className="square"
+        // onClick={props.onClick}
+        // alt="nothing loaded :("/>
+        // map={AREAS_MAP}/>
+        <div className="square">
+            <img src={props.imgPath}
+                // className="square"
+                onClick={()=> console.log(props)}
+                alt="nothing loaded :("></img>
+            <button onClick={props.guessHigher}
+                className="top-button">Higher</button>
+            <button onClick={props.guessLower}
+                className="bottom-button">Lower</button>
+        </div>
+        // </button>
     );
 }
 
@@ -17,9 +33,10 @@ class Board extends React.Component {
         return (
             <Square
                 // value={this.props.squares[i]}
-                // onClick={() => this.props.onClick(i)}
+                guessHigher={() => this.props.guessHigher(i)}
+                guessLower={() => this.props.guessLower(i)}
                 // displayValue = {this.props.squares[i].displayValue}
-                imgPath = {this.props.squares[i].imgPath}
+                imgPath={this.props.squares[i].imgPath}
             />
         );
     }
@@ -51,14 +68,13 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            history: [
-                {
-                    squares: Array(9).fill(null)
-                }
-            ],
-            stepNumber: 0,
-            xIsNext: true
-        };
+            gameState : [],
+        }
+        // {
+            // history: [],
+            // stepNumber: 0,
+            // xIsNext: true
+        // };
     }
 
     // handleClick(i) {
@@ -80,12 +96,65 @@ class Game extends React.Component {
     //     });
     // }
 
+
     // jumpTo(step) {
     //     this.setState({
     //         stepNumber: step,
     //         xIsNext: (step % 2) === 0
     //     });
     // }
+
+    getRandomCardIndex (lengthOfCardsRemainingArray) {
+        return Math.floor(Math.random() * lengthOfCardsRemainingArray);
+    }
+
+    async guessHigher (i) {
+        console.log(this.state.gameState)
+        const currentState = this.state.gameState[this.state.gameState.length-1];
+        const newState = {...currentState};
+        // console.log(currentState)
+        const currentCard = currentState.currentBoard[i];
+        // console.log(currentCard)
+        const currentCardStrength = currentCard.strength;
+        const stateFormat = {...this.stateFormat};
+        const newRandomCardIndex = this.getRandomCardIndex(currentState.cardsRemaining.length);
+        const chosenCardDetails = currentState.cardsRemaining[newRandomCardIndex];
+        newState.cardsRemaining.splice(newRandomCardIndex, 1);
+        newState.turnNumber ++;
+        newState.currentBoard[i] = chosenCardDetails;
+        newState.cardsRemovedFromDeck.push(chosenCardDetails);
+        // this.state.gameState.push(newState);
+        console.log(currentState)
+        console.log(this.state.gameState)
+        const fake = [...this.state.gameState, newState];
+        console.log(fake)
+        // console.log(newState)
+        await this.setState({
+            gameState: [...this.state.gameState, newState]
+        });
+
+        console.log(this.state.gameState)
+        // console.log(this.state.gameState)
+        // const cardsRemaining = 
+        // const indexOfChosenCard = this.getRandomCardIndex(cardsRemaining.length);
+        // const chosenCardDetails = cardsRemaining[indexOfChosenCard];
+        // cardsRemaining.splice(indexOfChosenCard, 1);
+        // console.log(this.state.gameState)
+// alert(JSON.stringify(this.currentBoard[i]));
+    }
+
+    guessLower(i){
+        alert(JSON.stringify(this.currentBoard[i]));
+    }
+
+    stateFormat = {
+        // const stateFormat = {
+            turnNumber: null,
+            cardsRemaining: null,
+            currentBoard: null,
+            cardsRemovedFromDeck: null,
+        // }
+    }
 
     render() {
         // // const history = this.state.history;
@@ -121,53 +190,67 @@ class Game extends React.Component {
             null,
             null,
         ];
-        
-        const stateHistory = [];
-        
-        const stateFormat = {
-            turnNumber: null,
-            cardsRemaining: null,
-            currentBoard: null,
-            cardsRemovedFromDeck: null,
-        }
-        
-        const getLatestState = () => stateHistory[stateHistory.length -1];
-        
-        const getRandomCardIndex = (lengthOfCardsRemainingArray) => Math.floor(Math.random() * lengthOfCardsRemainingArray);
-        
+
+        // const stateHistory = [];
+
+        // const stateFormat = {
+        //     turnNumber: null,
+        //     cardsRemaining: null,
+        //     currentBoard: null,
+        //     cardsRemovedFromDeck: null,
+        // }
+
+        // const getLatestState = () => stateHistory[stateHistory.length - 1];
+
+        // const getRandomCardIndex = (lengthOfCardsRemainingArray) => Math.floor(Math.random() * lengthOfCardsRemainingArray);
+
         const getInitialBoardAndCardsRemaining = () => {
             const cardsRemaining = [...allCards];
-            const initialBoard =  emptyBoardArray.map((item)=>{
-                const indexOfChosenCard = getRandomCardIndex(cardsRemaining.length);
+            const initialBoard = emptyBoardArray.map((item) => {
+                const indexOfChosenCard = this.getRandomCardIndex(cardsRemaining.length);
                 const chosenCardDetails = cardsRemaining[indexOfChosenCard];
                 cardsRemaining.splice(indexOfChosenCard, 1);
                 return chosenCardDetails
             });
-        
+
             return {
                 cardsRemaining,
                 initialBoard,
             }
         };
-        
-        const saveInitialState = (cardsRemaining, initialBoard) =>{
-            const initialState = {...stateFormat};
+
+        const saveInitialState = (cardsRemaining, initialBoard) => {
+            const initialState = { ...this.stateFormat };
             initialState.turnNumber = 0;
             initialState.cardsRemaining = cardsRemaining;
             initialState.currentBoard = initialBoard;
-            initialState.cardsRemovedFromDeck = initialBoard;
-            stateHistory.push(initialState);
-        }
-        
-        const {cardsRemaining, initialBoard} = getInitialBoardAndCardsRemaining();
+            initialState.cardsRemovedFromDeck = [...initialBoard];
+            // this.setState({
+            //     gameState: [...this.state.gameState, initialState],
+            //     //         history: history.concat([
+            //     //             {
+            //     //                 squares: squares
+            //     //             }
+            //     //         ]),
+            //     //         stepNumber: history.length,
+            //     //         xIsNext: !this.state.xIsNext
+            //     //     });
+            this.state.gameState.push(initialState);
+        // });
+    }
+
+        const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
+        // this.currentBoard = initialBoard;
         saveInitialState(cardsRemaining, initialBoard);
         return (
             <div className="game">
                 <div className="game-board">
                     <Board
                         // squares={current.squares}
-                        squares={initialBoard}
+                        squares={this.state.gameState[this.state.gameState.length-1].currentBoard}
                         onClick={i => this.handleClick(i)}
+                        guessHigher={i=>this.guessHigher(i)}
+                        guessLower={i=>this.guessLower(i)}
                     />
                 </div>
                 {/* <div className="game-info">

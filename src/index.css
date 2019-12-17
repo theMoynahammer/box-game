@@ -30,6 +30,7 @@ body {
     padding: 0;
     text-align: center;
     width: 223px;
+    position: relative;
   }
   
   .square:focus {
@@ -47,5 +48,26 @@ body {
   
   .game-info {
     margin-left: 20px;
+  }
+
+  .square .top-button{
+    right: 20px;
+    top:5px;
+    /* float: left; */
+    position: absolute;
+    /* left: 50%; */
+    /* position: relative; */
+    /* top: 50%;
+    left: 50%; */
+  }
+  .square .bottom-button{
+    right: 20px;
+    top: 25px;
+    /* float: left; */
+    position: absolute;
+    /* left: 50%; */
+    /* position: relative; */
+    /* top: 50%;
+    left: 50%; */
   }
   
