@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ImageMapper from 'react-image-mapper';
+import cloneDeep from 'lodash/cloneDeep';
 import './index.css';
 
 function Square(props) {
@@ -69,6 +70,7 @@ class Game extends React.Component {
         super(props);
         this.state = {
             gameState : [],
+            boardInitialized: false,
         }
         // {
             // history: [],
@@ -108,32 +110,28 @@ class Game extends React.Component {
         return Math.floor(Math.random() * lengthOfCardsRemainingArray);
     }
 
-    async guessHigher (i) {
-        console.log(this.state.gameState)
-        const currentState = this.state.gameState[this.state.gameState.length-1];
-        const newState = {...currentState};
+    guessHigher (i) {
+        const currentState = {...this.state.gameState[this.state.gameState.length-1]};
+        const newState = cloneDeep(currentState);
         // console.log(currentState)
         const currentCard = currentState.currentBoard[i];
         // console.log(currentCard)
         const currentCardStrength = currentCard.strength;
         const stateFormat = {...this.stateFormat};
-        const newRandomCardIndex = this.getRandomCardIndex(currentState.cardsRemaining.length);
-        const chosenCardDetails = currentState.cardsRemaining[newRandomCardIndex];
+        const newRandomCardIndex = this.getRandomCardIndex(newState.cardsRemaining.length);
+        const chosenCardDetails = newState.cardsRemaining[newRandomCardIndex];
         newState.cardsRemaining.splice(newRandomCardIndex, 1);
+
         newState.turnNumber ++;
+       
         newState.currentBoard[i] = chosenCardDetails;
         newState.cardsRemovedFromDeck.push(chosenCardDetails);
         // this.state.gameState.push(newState);
-        console.log(currentState)
-        console.log(this.state.gameState)
-        const fake = [...this.state.gameState, newState];
-        console.log(fake)
-        // console.log(newState)
-        await this.setState({
+        this.setState({
             gameState: [...this.state.gameState, newState]
         });
 
-        console.log(this.state.gameState)
+
         // console.log(this.state.gameState)
         // const cardsRemaining = 
         // const indexOfChosenCard = this.getRandomCardIndex(cardsRemaining.length);
@@ -144,7 +142,7 @@ class Game extends React.Component {
     }
 
     guessLower(i){
-        alert(JSON.stringify(this.currentBoard[i]));
+        alert('lower')
     }
 
     stateFormat = {
@@ -238,16 +236,19 @@ class Game extends React.Component {
             this.state.gameState.push(initialState);
         // });
     }
-
+        if(!this.state.boardInitialized){
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         // this.currentBoard = initialBoard;
         saveInitialState(cardsRemaining, initialBoard);
+        this.state.boardInitialized = true;
+        }
         return (
             <div className="game">
                 <div className="game-board">
                     <Board
                         // squares={current.squares}
                         squares={this.state.gameState[this.state.gameState.length-1].currentBoard}
+                        // squares={this.state.gameState[0].currentBoard}
                         onClick={i => this.handleClick(i)}
                         guessHigher={i=>this.guessHigher(i)}
                         guessLower={i=>this.guessLower(i)}
