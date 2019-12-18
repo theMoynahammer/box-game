@@ -1,77 +1,99 @@
 body {
-    font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
-  }
-  
-  ol, ul {
-    padding-left: 30px;
-  }
-  
-  .board-row:after {
-    clear: both;
-    content: "";
-    display: table;
-  }
-  
-  .status {
-    margin-bottom: 10px;
-  }
-  
-  .square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 324px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 223px;
-    position: relative;
-  }
-  
-  .square:focus {
-    outline: none;
-  }
-  
-  .kbd-navigation .square:focus {
-    background: #ddd;
-  }
-  
-  .game {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .game-info {
-    margin-left: 20px;
-  }
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+}
 
-  .square .top-button{
-    right: 20px;
-    top:5px;
-    /* float: left; */
-    position: absolute;
-    /* left: 50%; */
-    /* position: relative; */
-    /* top: 50%;
-    left: 50%; */
-  }
-  .square .bottom-button{
-    right: 20px;
-    top: 25px;
-    /* float: left; */
-    position: absolute;
-    /* left: 50%; */
-    /* position: relative; */
-    /* top: 50%;
-    left: 50%; */
-  }
+ol, ul {
+  padding-left: 30px;
+}
 
-  .infoDiv{
-    width: 300px;
-  }
-  
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.square {
+  background: #fff;
+  /* border: 1px solid #999; */
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  /* height: 324px; */
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  /* width: 223px; */
+  position: relative;
+}
+
+.square:focus {
+  outline: none;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+
+.square .top-button {
+  right: 20px;
+  top: 5px;
+  width: 66px;
+  /* float: left; */
+  position: absolute;
+  /* left: 50%; */
+  /* position: relative; */
+  /* top: 50%;
+    left: 50%; */
+}
+
+.square .middle-button {
+  right: 20px;
+  top: 22px;
+  width: 66px;
+  /* float: left; */
+  position: absolute;
+  /* left: 50%; */
+  /* position: relative; */
+  /* top: 50%;
+    left: 50%; */
+}
+
+.square .bottom-button {
+  right: 20px;
+  top: 39px;
+  width: 66px;
+  /* float: left; */
+  position: absolute;
+  /* left: 50%; */
+  /* position: relative; */
+  /* top: 50%;
+    left: 50%; */
+}
+
+.infoDiv {
+  width: 300px;
+}
+
+.cards-class {
+  width: 200px;
+  height: 290px;
+  margin-left: 5px;
+  margin-right: 5px;
+  /* vertical-align: middle; */
+}

@@ -1,3 +1,4 @@
-const fake = [];
+const numberthing = 0;
+const newT = numberthing++;
 
-console.log(fake.length)
+console.log(numberthing)

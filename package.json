@@ -2,7 +2,7 @@
   "name": "react-tic-tac-toe",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://theMoynahammer.github.io/boxgame",
+  "homepage": "http://theMoynahammer.github.io/box-game",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
