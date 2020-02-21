@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/box-game/static/css/main.75b20e53.chunk.css",
-    "main.js": "/box-game/static/js/main.a31808b2.chunk.js",
-    "main.js.map": "/box-game/static/js/main.a31808b2.chunk.js.map",
+    "main.css": "/box-game/static/css/main.3ac33c70.chunk.css",
+    "main.js": "/box-game/static/js/main.f5b7da69.chunk.js",
+    "main.js.map": "/box-game/static/js/main.f5b7da69.chunk.js.map",
     "runtime-main.js": "/box-game/static/js/runtime-main.dbde114c.js",
     "runtime-main.js.map": "/box-game/static/js/runtime-main.dbde114c.js.map",
     "static/js/2.1775942c.chunk.js": "/box-game/static/js/2.1775942c.chunk.js",
     "static/js/2.1775942c.chunk.js.map": "/box-game/static/js/2.1775942c.chunk.js.map",
     "index.html": "/box-game/index.html",
-    "precache-manifest.888efb9ad1bec11c90ebf5482a3f9e2b.js": "/box-game/precache-manifest.888efb9ad1bec11c90ebf5482a3f9e2b.js",
+    "precache-manifest.e22681dff66a269e3bea24f4aff48342.js": "/box-game/precache-manifest.e22681dff66a269e3bea24f4aff48342.js",
     "service-worker.js": "/box-game/service-worker.js",
-    "static/css/main.75b20e53.chunk.css.map": "/box-game/static/css/main.75b20e53.chunk.css.map",
+    "static/css/main.3ac33c70.chunk.css.map": "/box-game/static/css/main.3ac33c70.chunk.css.map",
     "static/js/2.1775942c.chunk.js.LICENSE": "/box-game/static/js/2.1775942c.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.dbde114c.js",
     "static/js/2.1775942c.chunk.js",
-    "static/css/main.75b20e53.chunk.css",
-    "static/js/main.a31808b2.chunk.js"
+    "static/css/main.3ac33c70.chunk.css",
+    "static/js/main.f5b7da69.chunk.js"
   ]
 }
