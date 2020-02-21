@@ -7,10 +7,15 @@ ol, ul {
   padding-left: 30px;
 }
 
-.board-row:after {
+/* .board-row:after {
   clear: both;
   content: "";
   display: table;
+} */
+
+.board-row {
+ display: flex;
+ flex: 1 1 auto;
 }
 
 .status {
@@ -43,6 +48,7 @@ ol, ul {
 
 .game {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: row;
 }
 
@@ -87,13 +93,23 @@ ol, ul {
 }
 
 .infoDiv {
-  width: 300px;
+  /* width: 300px; */
+  max-width: 100%;
 }
 
 .cards-class {
-  width: 200px;
-  height: 290px;
+  /* width: 200px; */
+  max-width: 100%;
+  min-width: 80px;
+  min-height: 130px;
+  /* height: 290px; */
+  max-height: 100%;
   margin-left: 5px;
   margin-right: 5px;
   /* vertical-align: middle; */
 }
+
+/* .game-board {
+  display: flex;
+  flex: 1 1 auto;
+} */

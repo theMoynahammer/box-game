@@ -109,12 +109,12 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <div className="infoDiv">
-                    <h1>{`The Box Game`}</h1>
-                    <h3>Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</h3>
-                    <h3>Previous guess: {this.previousGuess}</h3>
-                    <h3>Card drawn: {this.cardDrawn}</h3>
-                    <h3>Previous card: {this.previousCard}</h3>
-                    <h3>Number of samesies: {this.numberOfSamesies}</h3>
+                    <div>{`The Box Game`}</div>
+                    <div class="box-game-header">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
+                    <div class="box-game-info">Previous guess: {this.previousGuess}</div>
+                    <div class="box-game-info">Card drawn: {this.cardDrawn}</div>
+                    <div class="box-game-info">Previous card: {this.previousCard}</div>
+                    <div class="box-game-info">Number of samesies: {this.numberOfSamesies}</div>
                     <label>
                         Would you like to cheat?
                     <input
@@ -124,14 +124,13 @@ class Game extends React.Component {
                             onChange={this.handleCheatingCheckbox} />
                     </label>
                     {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <h1 style={{ color: "red" }}>You Lose, Idiot!</h1> : null}
-                    {this.gameWon === true ? <h4>You Win, Genius!</h4> : null}
+                    {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win, Genius (Hi Joe)!</h4> : null}
                     {this.state.isThePlayerACheater ? this.formattedCardsRemainingList.map((card)=> <div>{card}</div>): null}
 
                 </div>
                 <div className="game-board">
                     <Board
                         squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
-                        onClick={i => this.handleClick(i)}
                         evaluateGuess={(i, higherLowerOrSamesies) => this.handleGuessAndManageState(i, higherLowerOrSamesies)}
                     />
                 </div>

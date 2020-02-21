@@ -3,12 +3,32 @@ import cloneDeep from 'lodash/cloneDeep';
 
 const incorrectGuessCardFormat = {
     spotIsStillValid: false,
-    imgPath: `/x-image.png`
+    imgPath: process.env.PUBLIC_URL + `/x-image.png`
 };
 
 const getRandomCardIndex = (lengthOfCardsRemainingArray) => Math.floor(Math.random() * lengthOfCardsRemainingArray);
 
-const setGameLostProperty = ({currentBoard}) => !currentBoard.some(item=>item.spotIsStillValid === true);
+const setGameLostProperty = ({currentBoard, cardsRemaining}) => {
+    const spotsStillValid = currentBoard.some(item=>item.spotIsStillValid === true);
+    if (spotsStillValid){
+        return false;
+    }
+    else if (spotsStillValid && cardsRemaining.length === 0){
+        return true;
+    }
+    else{
+        return true;
+    }
+}
+const setGameWonProperty = ({currentBoard, cardsRemaining}) => {
+    const spotsAreStillValid = currentBoard.some(item=>item.spotIsStillValid === true)
+    if (cardsRemaining.length === 0 && spotsAreStillValid){
+        return true;
+    }
+    else{
+        return false;
+    }
+} 
 
 const wasGuessCorrect = (currentCardStrength, chosenCardStrength, higherLowerOrSamesies) =>{
     if (higherLowerOrSamesies === 'Higher'){
@@ -63,6 +83,7 @@ const evaluateGuess = (i, higherLowerOrSamesies, currentState) => {
     newState.currentBoard[i] = guessWasCorrect ? chosenCardDetails : incorrectGuessCardFormat;
     newState.cardsRemovedFromDeck.push(chosenCardDetails);
     newState.gameLost = setGameLostProperty(newState);
+    newState.gameWon = setGameWonProperty(newState);
     newState.numberOfSamesies = newNumberOfSamesies;
     newState.cardDrawn = cardDrawn;
     newState.previousCard = previousCard;
