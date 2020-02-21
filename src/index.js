@@ -101,33 +101,15 @@ class Game extends React.Component {
     }
 
     handleCheatingCheckbox = (event) => {
-        this.formattedCardsRemainingList = event.target.checked ? formatRemainingCardsCount(this.state.gameState[this.state.gameState.length-1].cardsRemaining) :  null;
-        this.setState({isThePlayerACheater: event.target.checked})
+        this.formattedCardsRemainingList = event.target.checked ? formatRemainingCardsCount(this.state.gameState[this.state.gameState.length - 1].cardsRemaining) : null;
+        this.setState({ isThePlayerACheater: event.target.checked })
     }
 
     render() {
         return (
+            <React.Fragment>
+                <div class="box-game-header">{`The Box Game`}</div>
             <div className="game">
-                <div className="infoDiv">
-                    <div>{`The Box Game`}</div>
-                    <div class="box-game-header">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
-                    <div class="box-game-info">Previous guess: {this.previousGuess}</div>
-                    <div class="box-game-info">Card drawn: {this.cardDrawn}</div>
-                    <div class="box-game-info">Previous card: {this.previousCard}</div>
-                    <div class="box-game-info">Number of samesies: {this.numberOfSamesies}</div>
-                    <label>
-                        Would you like to cheat?
-                    <input
-                            name="isThePlayerACheater"
-                            type="checkbox"
-                            checked={this.state.isThePlayerACheater}
-                            onChange={this.handleCheatingCheckbox} />
-                    </label>
-                    {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <h1 style={{ color: "red" }}>You Lose, Idiot!</h1> : null}
-                    {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win, Genius (Hi Joe)!</h4> : null}
-                    {this.state.isThePlayerACheater ? this.formattedCardsRemainingList.map((card)=> <div>{card}</div>): null}
-
-                </div>
                 <div className="game-board">
                     <Board
                         squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
@@ -139,6 +121,26 @@ class Game extends React.Component {
                     <ol>{moves}</ol>
                 </div> */}
             </div>
+            <div className="infoDiv">
+                <div class="box-game-info">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
+                <div class="box-game-info">Previous guess: {this.previousGuess}</div>
+                <div class="box-game-info">Card drawn: {this.cardDrawn}</div>
+                <div class="box-game-info">Previous card: {this.previousCard}</div>
+                <div class="box-game-info">Number of samesies: {this.numberOfSamesies}</div>
+                <label>
+                    Would you like to cheat?
+                            <input
+                        name="isThePlayerACheater"
+                        type="checkbox"
+                        checked={this.state.isThePlayerACheater}
+                        onChange={this.handleCheatingCheckbox} />
+                </label>
+                {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <h1 style={{ color: "red" }}>You Lose, Idiot!</h1> : null}
+                {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win, Genius (Hi Joe)!</h4> : null}
+                {this.state.isThePlayerACheater ? this.formattedCardsRemainingList.map((card) => <div>{card}</div>) : null}
+
+            </div>
+            </React.Fragment>
         );
     }
 }
