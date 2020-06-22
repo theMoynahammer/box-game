@@ -31,7 +31,7 @@ function Square(props) {
             {props.spotIsStillValid ? <div onClick={props.guessHigher} className="higher-button"></div> : null}
             <ResponsiveEmbed aspectRatio="1by1">
                 {/* <embed type="image/svg" src={props.imgPath} /> */}
-                <Image src={props.imgPath} alt="nothing loaded :(" ></Image>
+                <Image style={{ objectFit: 'contain', ...(props.imgPath.includes('cardback') ? { borderRadius: '26%' } : {}) }} src={props.imgPath} alt="nothing loaded :(" ></Image>
             </ResponsiveEmbed>
             {props.spotIsStillValid ? <div onClick={props.guessLower} className="lower-button"></div> : null}
             {/* <Image src={props.imgPath} alt="nothing loaded :(" responsive></Image> */}
@@ -68,7 +68,7 @@ class Board extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/woodimage.jpg)`, padding: '10px 0px' }}>
                 {/* <div className="board-row"> */}
                 <Row className="refactored-row">
                     <Col className="text-center">
@@ -163,29 +163,29 @@ class Game extends React.Component {
                 <Row>
                     <Col xs={2} className="infoDiv">
                         {/* <div className="infoDiv"> */}
-                            <div class="box-game-info">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
-                            <div class="box-game-info">Previous guess: {this.previousGuess}</div>
-                            <div class="box-game-info">Card drawn: {this.cardDrawn}</div>
-                            <div class="box-game-info">Previous card: {this.previousCard}</div>
-                            <div class="box-game-info">Number of samesies: {this.numberOfSamesies}</div>
-                            <label>
-                                Would you like to cheat?
+                        <div class="box-game-info">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
+                        <div class="box-game-info">Previous guess: {this.previousGuess}</div>
+                        <div class="box-game-info">Card drawn: {this.cardDrawn}</div>
+                        <div class="box-game-info">Previous card: {this.previousCard}</div>
+                        <div class="box-game-info">Number of samesies: {this.numberOfSamesies}</div>
+                        <label>
+                            Would you like to cheat?
                             <input
-                                    name="isThePlayerACheater"
-                                    type="checkbox"
-                                    checked={this.state.isThePlayerACheater}
-                                    onChange={this.handleCheatingCheckbox} />
-                            </label>
-                            {/* {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <h1 style={{ color: "red" }}>You Lose, Idiot!</h1> : null} */}
-                            {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null}
-                            {this.state.isThePlayerACheater ? this.formattedCardsRemainingList.map((card) => <div>{card}</div>) : null}
+                                name="isThePlayerACheater"
+                                type="checkbox"
+                                checked={this.state.isThePlayerACheater}
+                                onChange={this.handleCheatingCheckbox} />
+                        </label>
+                        {/* {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <h1 style={{ color: "red" }}>You Lose, Idiot!</h1> : null} */}
+                        {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null}
+                        {this.state.isThePlayerACheater ? this.formattedCardsRemainingList.map((card) => <div>{card}</div>) : null}
 
                         {/* </div> */}
                         {/* <div className="game"> */}
                         {/* <div className="game-board"> */}
                     </Col>
                     <Col>
-                        {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <div style={{ color: "red" }}><h1>You Lose, Idiot!</h1><Button onClick={()=>window.location.reload()}variant="secondary">Play Again?</Button></div> :
+                        {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <div style={{ color: "red" }}><h1>You Lose, Idiot!</h1><Button onClick={() => window.location.reload()} variant="secondary">Play Again?</Button></div> :
                             <Board
                                 squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
                                 evaluateGuess={(i, higherLowerOrSamesies) => this.handleGuessAndManageState(i, higherLowerOrSamesies)}

@@ -24,7 +24,8 @@ ol, ul {
 
 .refactored-row {
   margin-bottom: 5px;
-  max-height: 33%;
+  /* This is stupid, but what's happening isthe column is centering before the image is resized. this is a hack */
+  padding-left: 7%;
 }
 
 .status {
