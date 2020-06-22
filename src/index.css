@@ -24,6 +24,7 @@ ol, ul {
 
 .refactored-row {
   margin-bottom: 5px;
+  max-height: 33%;
 }
 
 .status {
@@ -72,22 +73,22 @@ ol, ul {
 /* .square .top-button { */
 .higher-button {
   top:0;
-  left: 24.5%;
+  left: 15.5%;
   height: 50%;
   position: absolute; 
   background-color: 'transparent';
   z-index: 10;
-  width: 51%;
+  width: 69%;
 }
 
 .lower-button {
   bottom:0;
-  left: 24.5%;
+  left: 15.5%;
   height: 50%;
   position: absolute; 
   background-color: 'transparent';
   z-index: 10;
-  width: 51%;
+  width: 69%;
 }
 
 .square .middle-button {
@@ -121,6 +122,7 @@ ol, ul {
 .infoDiv {
   /* width: 300px; */
   /* max-width: 100%; */
+  font-size: 12px;
 }
 
 .cards-class {
