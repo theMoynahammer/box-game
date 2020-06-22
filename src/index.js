@@ -4,6 +4,12 @@ import ReactDOM from 'react-dom';
 // import cloneDeep from 'lodash/cloneDeep';
 import { evaluateGuess, formatRemainingCardsCount } from './logic-functions/helperFunctions';
 import { getInitialBoardAndCardsRemaining, getInitialState } from './logic-functions/setUpInitialBoard';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed';
+import Image from 'react-bootstrap/Image';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 function Square(props) {
@@ -17,15 +23,28 @@ function Square(props) {
         // onClick={props.onClick}
         // alt="nothing loaded :("/>
         // map={AREAS_MAP}/>
-        <div className="square">
-            <img className="cards-class" src={props.imgPath} alt="nothing loaded :("></img>
-            {props.spotIsStillValid ?
+        // <div>
+        <div style={{ width: 'auto', height: 'auto', maxWidth: '30vw', position: 'relative' }}>
+            {/* <div className="square"> */}
+            {/* <img src={props.imgPath} alt="nothing loaded :("></img> */}
+            <div onClick={props.guessHigher} className="higher-button"></div>
+            <ResponsiveEmbed aspectRatio="4by3">
+                {/* <embed type="image/svg" src={props.imgPath} /> */}
+                <Image src={props.imgPath} alt="nothing loaded :(" ></Image>
+            </ResponsiveEmbed>
+            <div onClick={props.guessLower} className="lower-button"></div>
+            {/* <Image src={props.imgPath} alt="nothing loaded :(" responsive></Image> */}
+            {/* <img className="cards-class" src={props.imgPath} alt="nothing loaded :("></img> */}
+            {/* {props.spotIsStillValid ?
                 [
-                    <button onClick={props.guessHigher} className="top-button">Higher</button>,
-                    <button onClick={props.guessSamesies} className="middle-button">Samesies</button>,
-                    <button onClick={props.guessLower} className="bottom-button">Lower</button>,
+                    <button onClick={props.guessHigher} >Higher</button>,
+                    <button onClick={props.guessSamesies} >Samesies</button>,
+                    <button onClick={props.guessLower} >Lower</button>,
+                    // <button onClick={props.guessHigher} className="top-button">Higher</button>,
+                    // <button onClick={props.guessSamesies} className="middle-button">Samesies</button>,
+                    // <button onClick={props.guessLower} className="bottom-button">Lower</button>,
                 ]
-                : null}
+                : null} */}
             {/* {props.spotIsStillValid ? <button onClick={props.guessLower}
                 // className="bottom-button">Lower</button> : null} */}
         </div>
@@ -49,12 +68,42 @@ class Board extends React.Component {
     render() {
         return (
             <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
+                {/* <div className="board-row"> */}
+                <Row className="refactored-row">
+                    <Col className="text-center">
+                        {this.renderSquare(0)}
+                    </Col>
+                    <Col className="text-center">
+                        {this.renderSquare(1)}
+                    </Col>
+                    <Col className="text-center">
+                        {this.renderSquare(2)}
+                    </Col>
+                </Row>
+                <Row className="refactored-row">
+                    <Col className="text-center">
+                        {this.renderSquare(3)}
+                    </Col>
+                    <Col className="text-center">
+                        {this.renderSquare(4)}
+                    </Col>
+                    <Col className="text-center">
+                        {this.renderSquare(5)}
+                    </Col>
+                </Row>
+                <Row className="refactored-row">
+                    <Col className="text-center">
+                        {this.renderSquare(6)}
+                    </Col>
+                    <Col className="text-center">
+                        {this.renderSquare(7)}
+                    </Col>
+                    <Col className="text-center">
+                        {this.renderSquare(8)}
+                    </Col>
+                </Row>
+                {/* </div> */}
+                {/* <div className="board-row">
                     {this.renderSquare(3)}
                     {this.renderSquare(4)}
                     {this.renderSquare(5)}
@@ -63,7 +112,7 @@ class Board extends React.Component {
                     {this.renderSquare(6)}
                     {this.renderSquare(7)}
                     {this.renderSquare(8)}
-                </div>
+                </div> */}
             </div>
         );
     }
@@ -107,40 +156,42 @@ class Game extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
+            // <React.Fragment>
+            <Container className="container-override">
                 <div class="box-game-header">{`The Box Game`}</div>
-            <div className="game">
-                <div className="game-board">
-                    <Board
-                        squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
-                        evaluateGuess={(i, higherLowerOrSamesies) => this.handleGuessAndManageState(i, higherLowerOrSamesies)}
-                    />
-                </div>
+                {/* <div className="game"> */}
+                {/* <div className="game-board"> */}
+                <Board
+                    squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
+                    evaluateGuess={(i, higherLowerOrSamesies) => this.handleGuessAndManageState(i, higherLowerOrSamesies)}
+                />
+                {/* </div> */}
                 {/* <div className="game-info">
                     <div>{status}</div>
                     <ol>{moves}</ol>
                 </div> */}
-            </div>
-            <div className="infoDiv">
-                <div class="box-game-info">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
-                <div class="box-game-info">Previous guess: {this.previousGuess}</div>
-                <div class="box-game-info">Card drawn: {this.cardDrawn}</div>
-                <div class="box-game-info">Previous card: {this.previousCard}</div>
-                <div class="box-game-info">Number of samesies: {this.numberOfSamesies}</div>
-                <label>
-                    Would you like to cheat?
+                {/* </div> */}
+                <div className="infoDiv">
+                    <div class="box-game-info">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
+                    <div class="box-game-info">Previous guess: {this.previousGuess}</div>
+                    <div class="box-game-info">Card drawn: {this.cardDrawn}</div>
+                    <div class="box-game-info">Previous card: {this.previousCard}</div>
+                    <div class="box-game-info">Number of samesies: {this.numberOfSamesies}</div>
+                    <label>
+                        Would you like to cheat?
                             <input
-                        name="isThePlayerACheater"
-                        type="checkbox"
-                        checked={this.state.isThePlayerACheater}
-                        onChange={this.handleCheatingCheckbox} />
-                </label>
-                {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <h1 style={{ color: "red" }}>You Lose, Idiot!</h1> : null}
-                {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win, Genius (Hi Joe)!</h4> : null}
-                {this.state.isThePlayerACheater ? this.formattedCardsRemainingList.map((card) => <div>{card}</div>) : null}
+                            name="isThePlayerACheater"
+                            type="checkbox"
+                            checked={this.state.isThePlayerACheater}
+                            onChange={this.handleCheatingCheckbox} />
+                    </label>
+                    {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <h1 style={{ color: "red" }}>You Lose, Idiot!</h1> : null}
+                    {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null}
+                    {this.state.isThePlayerACheater ? this.formattedCardsRemainingList.map((card) => <div>{card}</div>) : null}
 
-            </div>
-            </React.Fragment>
+                </div>
+            </Container>
+            // </React.Fragment>
         );
     }
 }
