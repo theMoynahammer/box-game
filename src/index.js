@@ -25,7 +25,7 @@ function Square(props) {
         // alt="nothing loaded :("/>
         // map={AREAS_MAP}/>
         // <div>
-        <div style={{ width: 'auto', height: 'auto', maxWidth: '30vw', maxHeight: '350px', position: 'relative' }}>
+        <div style={{ height: 'auto', maxWidth: '14.5vw', maxHeight: '350px', position: 'relative' }}>
             {/* <div className="square"> */}
             {/* <img src={props.imgPath} alt="nothing loaded :("></img> */}
             {props.spotIsStillValid ? <div onClick={props.guessHigher} className="higher-button"></div> : null}
@@ -159,7 +159,7 @@ class Game extends React.Component {
         return (
             // <React.Fragment>
             <Container fluid='md'>
-                <div class="box-game-header"><Image style={{ width: '30px' }} src="/favicon.ico"></Image>{`The Box Game`}</div>
+                <div class="box-game-header"><Image style={{ width: '30px' }} src={process.env.PUBLIC_URL + "/boximage.png"}></Image>{`The Box Game`}</div>
                 <Row>
                     <Col xs={2} className="infoDiv">
                         {/* <div className="infoDiv"> */}

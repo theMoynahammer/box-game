@@ -122,7 +122,8 @@ ol, ul {
 .infoDiv {
   /* width: 300px; */
   /* max-width: 100%; */
-  font-size: 12px;
+  /* font-size: 12px; */
+  font-size: calc(0.2em + 1vmin);
 }
 
 .cards-class {
