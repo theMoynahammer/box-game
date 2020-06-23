@@ -76,7 +76,8 @@ class Game extends React.Component {
         return (
             // <React.Fragment>
             <Container fluid='md' style={{ backgroundColor: 'white', padding: '0px' }}>
-                <Navbar bg="dark" variant="dark" expand="md">
+                <Navbar bg="dark" variant="dark">
+                {/* <Navbar bg="dark" variant="dark" expand="sm"> */}
                     {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
                     <img
                         src={process.env.PUBLIC_URL + "/boximage.png"}
