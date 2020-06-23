@@ -1,7 +1,7 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
   /* margin: 20px; */
-  background: rgb(235, 232, 232);
+  background:#D3D3D3;
 }
 
 ol, ul {
@@ -25,7 +25,7 @@ ol, ul {
 .refactored-row {
   margin-bottom: 5px;
   /* This is stupid, but what's happening isthe column is centering before the image is resized. this is a hack */
-  padding-left: 5%;
+  /* padding-left: 5%; */
 }
 
 .status {
@@ -72,6 +72,33 @@ ol, ul {
   padding: 10px;
 }
 
+.you-lose-modal {
+  background-color: #343a40;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  /* opacity: 1; */
+}
+
+.you-lose-overlay { 
+  height: 100%;
+  width: 100%;
+  color: black ;
+  background-clip: content-box;
+  background-color: rgba(255, 0, 0, 0.4);
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* .square .top-button { */
 .higher-button {
   top:0;
@@ -91,6 +118,11 @@ ol, ul {
   background-color: 'transparent';
   z-index: 10;
   width: 69%;
+}
+
+.card-box {
+  display: flex;
+  align-items: center;
 }
 
 .square .middle-button {

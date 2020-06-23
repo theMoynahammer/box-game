@@ -76,6 +76,7 @@ class Board extends React.Component {
             <div style={{ backgroundSize: 'cover', backgroundImage: `url(${process.env.PUBLIC_URL}/woodimage.jpg)`, padding: '10px 0px' }}>
                 {/* <div className="board-row"> */}
                 <Row className="refactored-row">
+                    {/* TODO use card-box class and center everything */}
                     <Col className="text-center">
                         {this.renderSquare(0)}
                     </Col>
@@ -163,7 +164,7 @@ class Game extends React.Component {
     render() {
         return (
             // <React.Fragment>
-            <Container fluid='md' style={{backgroundColor: 'white', padding: '0px'}}>
+            <Container fluid='md' style={{ backgroundColor: 'white', padding: '0px' }}>
                 <Navbar bg="dark" variant="dark" expand="lg">
                     {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
                     <img
@@ -172,7 +173,7 @@ class Game extends React.Component {
                         height="30"
                         alt="The Box Game"
                     />
-                    <Navbar.Brand style={{paddingLeft: '5px'}}>The Box Game</Navbar.Brand>
+                    <Navbar.Brand style={{ paddingLeft: '5px' }}>The Box Game</Navbar.Brand>
                     {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
                     {/* <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
@@ -201,14 +202,29 @@ class Game extends React.Component {
                         <div className="stat-line"><strong>Card drawn: </strong>{this.cardDrawn}</div>
                         <div className="stat-line"><strong>Previous card: </strong>{this.previousCard}</div>
                         <div className="stat-line"><strong>Number of samesies: </strong>{this.numberOfSamesies}</div>
-                        <label>
-                            <strong>Would you like to cheat?</strong>
-                            <input
+                        {/* <label> */}
+                            {/* <strong>Would you like to cheat?</strong> */}
+                            {/* <input
                                 name="isThePlayerACheater"
                                 type="checkbox"
                                 checked={this.state.isThePlayerACheater}
-                                onChange={this.handleCheatingCheckbox} />
-                        </label>
+                                onChange={this.handleCheatingCheckbox} /> */}
+                            <Form>
+                                <Form.Check
+                                    // style={{
+                                    //     backgroundColor: '#343a40',
+                                    //     borderColor: "#343a40"
+                                    // }}
+                                    inline
+                                    name="isThePlayerACheater"
+                                    type="checkbox"
+                                    id="custom-switch"
+                                    checked={this.state.isThePlayerACheater}
+                                    onChange={this.handleCheatingCheckbox}
+                                    label="Would you like to cheat?"
+                                />
+                            </Form>
+                        {/* </label> */}
                         {/* {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <h1 style={{ color: "red" }}>You Lose, Idiot!</h1> : null} */}
                         {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null}
                         {this.state.isThePlayerACheater ? this.formattedCardsRemainingList.map((card) => <div>{card}</div>) : null}
@@ -218,11 +234,18 @@ class Game extends React.Component {
                         {/* <div className="game-board"> */}
                     </Col>
                     <Col>
-                        {this.state.gameState[this.state.gameState.length - 1].gameLost === true ? <div style={{ color: "red" }}><h1>You Lose, Idiot!</h1><Button onClick={() => window.location.reload()} variant="secondary">Play Again?</Button></div> :
+                        {this.state.gameState[this.state.gameState.length - 1].gameLost === true && 
+                            <div className="you-lose-overlay">
+                                <div className="you-lose-modal">
+                                    <h1>You Lose!</h1>
+                                    <Button onClick={() => window.location.reload()} variant="secondary">Play Again?</Button>
+                                </div>
+                            </div>
+                        }
                             <Board
                                 squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
                                 evaluateGuess={(i, higherLowerOrSamesies) => this.handleGuessAndManageState(i, higherLowerOrSamesies)}
-                            />}
+                            />
                         {/* </div> */}
                         {/* <div className="game-info">
                     <div>{status}</div>
