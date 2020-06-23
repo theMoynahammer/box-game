@@ -13,6 +13,9 @@ ol, ul {
   content: "";
   display: table;
 } */
+.dropdown-item{
+  font-size: .8em;
+}
 
 .board-row {
  display: flex;
@@ -88,7 +91,35 @@ ol, ul {
   width: 100%;
   color: black ;
   background-clip: content-box;
-  background-color: rgba(255, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.you-win-modal {
+  background-color: #343a40;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  pointer-events: auto;
+  /* opacity: 1; */
+}
+
+.you-win-overlay { 
+  height: 100%;
+  width: 100%;
+  color: black ;
+  background-clip: content-box;
+  background-color: rgba(40, 191, 224, 0.6);
   z-index: 10;
   position: absolute;
   top: 0;

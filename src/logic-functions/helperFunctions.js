@@ -21,6 +21,7 @@ const setGameLostProperty = ({currentBoard, cardsRemaining}) => {
     }
 }
 const setGameWonProperty = ({currentBoard, cardsRemaining}) => {
+    return true;
     const spotsAreStillValid = currentBoard.some(item=>item.spotIsStillValid === true)
     if (cardsRemaining.length === 0 && spotsAreStillValid){
         return true;
