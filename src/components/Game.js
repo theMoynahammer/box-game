@@ -163,6 +163,7 @@ class Game extends React.Component {
                                 <li>Make mad, mad cash</li>
                                 <li>Add undo functionality</li>
                                 <li>Write How to play section</li>
+                                <li>Add deck of cards animation</li>
                             </ul>
 
                     </Modal.Body>
