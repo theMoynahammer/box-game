@@ -30,7 +30,8 @@ class Game extends React.Component {
     cardDrawn = null;
     numberOfSamesies = 0;
     formattedCardsRemainingList = null;
-    currentStreak = 'n/a';
+    currentStreakNumber = 'N/A';
+    currentStreakType = null;
     rageQuits = 0;
     totalWins = 0;
     totalLosses = 0;
@@ -40,8 +41,27 @@ class Game extends React.Component {
         const currentState = { ...this.state.gameState[this.state.gameState.length - 1] };
         const { newState } = evaluateGuess(i, higherLowerOrSamesies, currentState);
         const { cardDrawn, previousCard, numberOfSamesies, previousGuess, gameLost, gameWon } = newState;
-        if (gameLost) this.totalLosses++;
-        if (gameWon) this.totalWins++;
+        if (gameLost) {
+            if (this.currentStreakType === 'losses' || this.currentStreakType === null){
+                this.currentStreakNumber === 'N/A' ? this.currentStreakNumber = 1 : this.currentStreakNumber ++;
+            }
+            else if (this.currentStreakType === 'wins' || this.currentStreakType === null){
+                this.currentStreakNumber === 'N/A' ? this.currentStreakNumber = 1 : this.currentStreakNumber ++;
+            }
+            this.totalLosses++;
+            this.currentStreakType = 'losses'
+        }
+        // if (gameWon) this.totalWins++;
+        if (gameWon) {
+            if (this.currentStreakType === 'wins' || this.currentStreakType === null){
+                this.currentStreakNumber === 'N/A' ? this.currentStreakNumber = 1 : this.currentStreakNumber ++;
+            }
+            else if (this.currentStreakType === 'losses' || this.currentStreakType === null){
+                this.currentStreakNumber === 'N/A' ? this.currentStreakNumber = 1 : this.currentStreakNumber ++;
+            }
+            this.totalWins++;
+            this.currentStreakType = 'wins'
+        }
         this.cardDrawn = cardDrawn;
         this.previousCard = previousCard;
         this.numberOfSamesies = numberOfSamesies;
@@ -65,6 +85,10 @@ class Game extends React.Component {
 
     setBackground = (selectedBackground) => {
         this.setState({ selectedBackground })
+    }
+
+    handleWinLossStats = (gameWonOrGameLost) =>{
+        
     }
 
     handleCheatingCheckbox = (event) => {
@@ -124,7 +148,7 @@ class Game extends React.Component {
                         <h5>Session Stats</h5>
                         <div className="stat-line">Total Wins: {this.totalWins}</div>
                         <div className="stat-line">Total Losses: {this.totalLosses}</div>
-                        <div className="stat-line">Current Streak: {this.currentStreak}</div>
+                        <div className="stat-line">Current Streak: {`${this.currentStreakNumber} ${this.currentStreakType} in a row`}</div>
                         <div className="stat-line">Rage Quits: {this.rageQuits}</div>
                         <hr />
                         <Form>
