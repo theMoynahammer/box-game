@@ -13,7 +13,9 @@ function Square(props) {
         //     {props.spotIsStillValid ? <div onClick={props.guessLower} className="lower-button"></div> : null}
         // </div>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Image style={{ maxWidth: '70%', ...(props.imgPath.includes('cardback') ? { borderRadius: '26%' } : {}) }} src={props.imgPath} alt="nothing loaded :(" ></Image>
+            {props.spotIsStillValid && <div onClick={props.guessHigher} className="higher-button"></div>}
+            <Image style={{ maxWidth: '70%', ...(props.imgPath.includes('cardback') ? { borderRadius: '4%' } : {}) }} src={props.imgPath} alt="nothing loaded :(" ></Image>
+            {props.spotIsStillValid && <div onClick={props.guessLower} className="lower-button"></div>}
         </div>
     );
 }
