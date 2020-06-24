@@ -4,6 +4,19 @@ body {
   background:#D3D3D3;
 }
 
+.container-override {
+  background-color: white;
+  padding: 0px;
+}
+
+#root{
+  min-width: 100%;
+}
+
+.main-row {
+  /* margin-right: 0px; */
+}
+
 ol, ul {
   padding-left: 30px;
 }
@@ -120,7 +133,7 @@ ol, ul {
   color: black ;
   background-clip: content-box;
   background-color: rgba(40, 191, 224, 0.6);
-  z-index: 10;
+  z-index: 15;
   position: absolute;
   top: 0;
   left: 0;

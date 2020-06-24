@@ -37,37 +37,18 @@ class Game extends React.Component {
     totalLosses = 0;
     previousOutcome = null;
 
-    async handleGuessAndManageState(i, higherLowerOrSamesies) {
+    handleGuessAndManageState(i, higherLowerOrSamesies) {
         const currentState = { ...this.state.gameState[this.state.gameState.length - 1] };
         const { newState } = evaluateGuess(i, higherLowerOrSamesies, currentState);
         const { cardDrawn, previousCard, numberOfSamesies, previousGuess, gameLost, gameWon } = newState;
-        if (gameLost) {
-            if (this.currentStreakType === 'losses' || this.currentStreakType === null){
-                this.currentStreakNumber === 'N/A' ? this.currentStreakNumber = 1 : this.currentStreakNumber ++;
-            }
-            else if (this.currentStreakType === 'wins' || this.currentStreakType === null){
-                this.currentStreakNumber === 'N/A' ? this.currentStreakNumber = 1 : this.currentStreakNumber ++;
-            }
-            this.totalLosses++;
-            this.currentStreakType = 'losses'
-        }
-        // if (gameWon) this.totalWins++;
-        if (gameWon) {
-            if (this.currentStreakType === 'wins' || this.currentStreakType === null){
-                this.currentStreakNumber === 'N/A' ? this.currentStreakNumber = 1 : this.currentStreakNumber ++;
-            }
-            else if (this.currentStreakType === 'losses' || this.currentStreakType === null){
-                this.currentStreakNumber === 'N/A' ? this.currentStreakNumber = 1 : this.currentStreakNumber ++;
-            }
-            this.totalWins++;
-            this.currentStreakType = 'wins'
-        }
+        if (gameLost) this.handleWinLossStats(false);
+        if (gameWon) this.handleWinLossStats(true);
         this.cardDrawn = cardDrawn;
         this.previousCard = previousCard;
         this.numberOfSamesies = numberOfSamesies;
         this.previousGuess = previousGuess;
         this.formattedCardsRemainingList = formatRemainingCardsCount(newState.cardsRemaining)
-        await this.setState({
+        this.setState({
             gameState: [...this.state.gameState, newState]
         });
     }
@@ -75,8 +56,8 @@ class Game extends React.Component {
     resetGame = (rageQuit = false) => {
         if (rageQuit) {
             this.rageQuits++;
-            this.totalLosses++;
-
+            // this.totalLosses++;
+            this.handleWinLossStats(false);
         };
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         const initialState = getInitialState(cardsRemaining, initialBoard);
@@ -87,8 +68,27 @@ class Game extends React.Component {
         this.setState({ selectedBackground })
     }
 
-    handleWinLossStats = (gameWonOrGameLost) =>{
-        
+    handleWinLossStats = (gameWon) =>{
+        if (!gameWon) {
+            if (this.currentStreakType === 'losses') {
+                this.currentStreakNumber ++;
+            }
+            else if (this.currentStreakType === 'wins' || this.currentStreakType === null){
+                this.currentStreakNumber = 1;
+            }
+            this.totalLosses++;
+            this.currentStreakType = 'losses'
+        }
+        else {
+            if (this.currentStreakType === 'wins') {
+                this.currentStreakNumber ++;
+            }
+            else if (this.currentStreakType === 'losses' || this.currentStreakType === null){
+                this.currentStreakNumber = 1;
+            }
+            this.totalWins++;
+            this.currentStreakType = 'wins'
+        }
     }
 
     handleCheatingCheckbox = (event) => {
@@ -99,7 +99,8 @@ class Game extends React.Component {
     render() {
         return (
             // <React.Fragment>
-            <Container fluid='md' style={{ backgroundColor: 'white', padding: '0px' }}>
+            <Container fluid='lg' className="container-override">
+                {/* <Container fluid='lg' style={{ backgroundColor: 'white', padding: '0px' }}> */}
                 <Navbar bg="dark" variant="dark">
                 {/* <Navbar bg="dark" variant="dark" expand="sm"> */}
                     {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
@@ -135,8 +136,8 @@ class Game extends React.Component {
                         </Form> */}
                     </Navbar.Collapse>
                 </Navbar>
-                <Row >
-                    <Col xs={4} className="infoDiv">
+                <Row className="main-row">
+                    <Col xs={12} sm={4} className="infoDiv">
                         {/* <div className="infoDiv"> */}
                         <h5>Current Game Info</h5>
                         <div className="stat-line">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
@@ -165,7 +166,7 @@ class Game extends React.Component {
                         {/* {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null} */}
                         {this.state.isThePlayerACheater && this.formattedCardsRemainingList.map((card) => <div>{card}</div>)}
                     </Col>
-                    <Col>
+                    <Col xs={12} sm={8}>
                         {this.state.gameState[this.state.gameState.length - 1].gameLost === true &&
                             <div className="you-lose-overlay">
                                 <div className="you-lose-modal">
@@ -182,7 +183,6 @@ class Game extends React.Component {
                                 </div>
                             </div>
                         }
-                        {/* TODO fix winning overlay prevent clicking, and update stats for streaks */}
                         <Board
                             squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
                             evaluateGuess={(i, higherLowerOrSamesies) => this.handleGuessAndManageState(i, higherLowerOrSamesies)}

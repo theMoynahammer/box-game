@@ -36,35 +36,35 @@ class Board extends React.Component {
                 padding: '10px 0px' }}>
                 <Row className="refactored-row">
                     {/* TODO use card-box class and center everything */}
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(0)}
                     </Col>
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(1)}
                     </Col>
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(2)}
                     </Col>
                 </Row>
                 <Row className="refactored-row">
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(3)}
                     </Col>
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(4)}
                     </Col>
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(5)}
                     </Col>
                 </Row>
                 <Row className="refactored-row">
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(6)}
                     </Col>
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(7)}
                     </Col>
-                    <Col className="text-center">
+                    <Col>
                         {this.renderSquare(8)}
                     </Col>
                 </Row>
