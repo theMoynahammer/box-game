@@ -9,8 +9,10 @@ import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed';
+import { FaQuestion, FaStickyNote } from 'react-icons/fa';
 import { Board } from './Board';
 
 class Game extends React.Component {
@@ -21,7 +23,9 @@ class Game extends React.Component {
         this.state = {
             gameState: [initialState],
             isThePlayerACheater: false,
-            selectedBackground: 'wood',
+            selectedBackground: 'amEx',
+            showHelpModal: false,
+            showNotesModal: false,
         }
     }
 
@@ -53,6 +57,12 @@ class Game extends React.Component {
         });
     }
 
+    toggleModal = (modalToChange) =>{
+        this.setState({
+            [modalToChange]: !this.state[modalToChange],
+        })
+    }
+
     resetGame = (rageQuit = false) => {
         if (rageQuit) {
             this.rageQuits++;
@@ -68,12 +78,12 @@ class Game extends React.Component {
         this.setState({ selectedBackground })
     }
 
-    handleWinLossStats = (gameWon) =>{
+    handleWinLossStats = (gameWon) => {
         if (!gameWon) {
             if (this.currentStreakType === 'losses') {
-                this.currentStreakNumber ++;
+                this.currentStreakNumber++;
             }
-            else if (this.currentStreakType === 'wins' || this.currentStreakType === null){
+            else if (this.currentStreakType === 'wins' || this.currentStreakType === null) {
                 this.currentStreakNumber = 1;
             }
             this.totalLosses++;
@@ -81,9 +91,9 @@ class Game extends React.Component {
         }
         else {
             if (this.currentStreakType === 'wins') {
-                this.currentStreakNumber ++;
+                this.currentStreakNumber++;
             }
-            else if (this.currentStreakType === 'losses' || this.currentStreakType === null){
+            else if (this.currentStreakType === 'losses' || this.currentStreakType === null) {
                 this.currentStreakNumber = 1;
             }
             this.totalWins++;
@@ -102,7 +112,7 @@ class Game extends React.Component {
             <Container fluid='lg' className="container-override">
                 {/* <Container fluid='lg' style={{ backgroundColor: 'white', padding: '0px' }}> */}
                 <Navbar bg="dark" variant="dark">
-                {/* <Navbar bg="dark" variant="dark" expand="sm"> */}
+                    {/* <Navbar bg="dark" variant="dark" expand="sm"> */}
                     {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
                     <img
                         src={process.env.PUBLIC_URL + "/boximage.png"}
@@ -116,26 +126,69 @@ class Game extends React.Component {
                         <Nav className="mr-auto">
                             {/* <Nav.Link href="#home">Home</Nav.Link>
                             <Nav.Link href="#link">Link</Nav.Link> */}
-                            <NavDropdown title="Background" >
-                                <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('amEx')}>AmEx</NavDropdown.Item>
-                                <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('darkPattern')}>Dark Pattern</NavDropdown.Item>
-                                <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('earth')}>Earth</NavDropdown.Item>
-                                <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('mars')}>Mars</NavDropdown.Item>
-                                <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('moon')}>Moon</NavDropdown.Item>
-                                <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('underwater')}>Underwater</NavDropdown.Item>
-                                <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('wood')}>Wood</NavDropdown.Item>
-                                {/* <NavDropdown.Item onClick={this.setBackground()}>Something</NavDropdown.Item> */}
-                                {/* <NavDropdown.Divider /> */}
-                                {/* <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item> */}
-                            </NavDropdown>
-                            <Button variant="outline-danger" onClick={() => this.resetGame(true)}>Rage Quit</Button>
+                            {/* <Button variant="outline-danger" onClick={() => this.resetGame(true)}>Rage Quit</Button> */}
                         </Nav>
                         {/* <Form inline>
                             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                             <Button variant="outline-success">Search</Button>
                         </Form> */}
+                        <Form inline>
+                                <NavDropdown title="Background">
+                                    <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('amEx')}>AmEx</NavDropdown.Item>
+                                    <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('darkPattern')}>Dark Pattern</NavDropdown.Item>
+                                    <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('earth')}>Earth</NavDropdown.Item>
+                                    <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('mars')}>Mars</NavDropdown.Item>
+                                    <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('moon')}>Moon</NavDropdown.Item>
+                                    <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('underwater')}>Underwater</NavDropdown.Item>
+                                    <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('wood')}>Wood</NavDropdown.Item>
+                                    {/* <NavDropdown.Item onClick={this.setBackground()}>Something</NavDropdown.Item> */}
+                                    {/* <NavDropdown.Divider /> */}
+                                    {/* <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item> */}
+                                </NavDropdown>
+                            </Form>
+                        <FaStickyNote onClick={() => this.toggleModal('showNotesModal')}style={{ marginRight: '16px',width: '20px', height: '20px', cursor: 'pointer', color: 'white' }}></FaStickyNote>
+                        <FaQuestion onClick={() => this.toggleModal('showHelpModal')}style={{ width: '20px', height: '20px',cursor: 'pointer', color: 'white' }} />
                     </Navbar.Collapse>
                 </Navbar>
+                <Modal centered={true} show={this.state.showNotesModal} onHide={() => this.toggleModal('showNotesModal')}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Connor's Future Enhancements</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Here are some enhancements I would like to make:
+                            <ul>
+                                <li>Remove margin from righthand side</li>
+                                <li>Save background choice</li>
+                                <li>Allow profile to be created</li>
+                                <li>Create API backend to manage accounts</li>
+                                <li>Make mad, mad cash</li>
+                                <li>Add undo functionality</li>
+                                <li>Write How to play section</li>
+                            </ul>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => this.toggleModal('showNotesModal')}>
+                            Close
+                        </Button>
+                        {/* <Button variant="primary" onClick={this.toggleHelpModal}>
+                            Save Changes
+                        </Button> */}
+                    </Modal.Footer>
+                </Modal>
+                <Modal centered={true} show={this.state.showHelpModal} onHide={() => this.toggleModal('showHelpModal')}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>How to Play</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Placeholder for now</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => this.toggleModal('showHelpModal')}>
+                            Close
+                        </Button>
+                        {/* <Button variant="primary" onClick={this.toggleHelpModal}>
+                            Save Changes
+                        </Button> */}
+                    </Modal.Footer>
+                </Modal>
                 <Row className="main-row">
                     <Col xs={12} sm={4} className="infoDiv">
                         {/* <div className="infoDiv"> */}
@@ -145,6 +198,7 @@ class Game extends React.Component {
                         <div className="stat-line">Card drawn: {this.cardDrawn}</div>
                         <div className="stat-line">Previous card: {this.previousCard}</div>
                         <div className="stat-line">Number of samesies: {this.numberOfSamesies}</div>
+                        <Button variant="outline-danger" onClick={() => this.resetGame(true)}>Rage Quit</Button>
                         <hr />
                         <h5>Session Stats</h5>
                         <div className="stat-line">Total Wins: {this.totalWins}</div>

@@ -154,6 +154,14 @@ ol, ul {
   width: 60%;
 }
 
+a{
+  color: white;
+}
+
+a:hover {
+  color: #D3D3D3;
+}
+
 .lower-button {
   bottom:0;
   left: 19.5%;
