@@ -311,7 +311,7 @@ class Game extends React.Component {
                             />
                             :
                             <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">You must win one game to unlock this</Tooltip>}>
-                                <span className="d-inline-block">
+                                <div style={{height: '30px', paddingTop:'10px'}}className="d-inline-block">
                                     {/* <Button disabled style={{ pointerEvents: 'none' }}>
                             Disabled button
                              </Button> */}
@@ -327,7 +327,7 @@ class Game extends React.Component {
                                             label="Show remaining card counts"
                                         />
                                     </Form>
-                                </span>
+                                </div>
                             </OverlayTrigger>}
                         {/* <Form>
                             <Form.Check
