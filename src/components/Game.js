@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { evaluateGuess, formatRemainingCardsCount } from '../logic-functions/helperFunctions';
 import { getInitialBoardAndCardsRemaining, getInitialState } from '../logic-functions/setUpInitialBoard';
 import Container from 'react-bootstrap/Container';
@@ -209,6 +210,7 @@ class Game extends React.Component {
                             <li>Add deck of cards animation</li>
                             <li>Add samesies</li>
                             <li>Enhance Unlockables</li>
+                            <li>Prevent screen refreshing to avoid loss count</li>
                         </ul>
 
                     </Modal.Body>
