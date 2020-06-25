@@ -7,6 +7,13 @@ body {
 .container-override {
   background-color: white;
   padding: 0px;
+  /* height: 100%; */
+  /* min-width: 100vw;
+  max-width: 100vw;
+  min-height: 100vh;
+  max-height: 100vh; */
+  /* display: flex;
+  flex: 0 0 25em; */
 }
 
 #root{
@@ -15,6 +22,29 @@ body {
 
 .main-row {
   /* margin-right: 0px; */
+}
+
+.card-remaining-icon-div{
+  display:flex;
+  /* flex-wrap: nowrap; */
+  max-width: 100%;
+  overflow: hidden;
+  /* flex-shrink: 0; */
+  /* flex-direction: row-reverse; */
+  /* justify-content: right; */
+  /* align-items: stretch; */
+  /* padding-right: 15px; */
+}
+
+.cards-remaining-card {
+margin-right: -30px;
+height: 50px;
+}
+
+.col-override {
+  /* padding: 0px; */
+  overflow: hidden;
+  /* min-height: 100vh; */
 }
 
 ol, ul {
@@ -40,8 +70,6 @@ ol, ul {
 
 .refactored-row {
   margin-bottom: 5px;
-  /* This is stupid, but what's happening isthe column is centering before the image is resized. this is a hack */
-  /* padding-left: 5%; */
 }
 
 .status {
@@ -209,7 +237,7 @@ a:hover {
   /* width: 300px; */
   /* max-width: 100%; */
   /* font-size: 12px; */
-  padding: 15px 30px;
+  padding: 15px 15px 15px 30px;
   font-size: calc(.4em + 1vmin);
 }
 

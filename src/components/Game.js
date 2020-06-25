@@ -23,6 +23,9 @@ class Game extends React.Component {
         super(props);
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         const initialState = getInitialState(cardsRemaining, initialBoard);
+        const rageQuits = parseInt(localStorage.getItem('rageQuits')) || 0;
+        const totalWins = parseInt(localStorage.getItem('totalWins')) || 0;
+        const totalLosses = parseInt(localStorage.getItem('totalLosses')) || 0;
         this.state = {
             gameState: [initialState],
             isThePlayerACheater: false,
@@ -30,10 +33,10 @@ class Game extends React.Component {
             showHelpModal: false,
             showNotesModal: false,
             showStatResetModal: false,
-            rageQuits: parseInt(localStorage.getItem('rageQuits')) || 0,
-            totalWins: parseInt(localStorage.getItem('totalWins')) || 0,
-            totalLosses: parseInt(localStorage.getItem('totalLosses')) || 0,
-            showCardsRemainingUnlocked: false,
+            rageQuits,
+            totalWins,
+            totalLosses,
+            showCardsRemainingUnlocked: totalWins >= 1 ? true: false,
         }
     }
 
@@ -151,10 +154,14 @@ class Game extends React.Component {
     }
 
     render() {
+        const cardsRemainingIcons = this.state.gameState[this.state.gameState.length - 1].cardsRemaining.map(() =>
+            <img className="cards-remaining-card"src={process.env.PUBLIC_URL + `/cardback.jpg`} alt="not found :("></img>
+        );
         return (
             // <React.Fragment>
-            <Container fluid='lg' className="container-override">
-                {/* <Container fluid='lg' style={{ backgroundColor: 'white', padding: '0px' }}> */}
+            // <Container fluid className="container-override">
+                // <div>
+                <Container fluid='lg' style={{ backgroundColor: 'white', padding: '0px' }}> 
                 <Navbar bg="dark" variant="dark">
                     {/* <Navbar bg="dark" variant="dark" expand="sm"> */}
                     {/* <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand> */}
@@ -201,7 +208,7 @@ class Game extends React.Component {
                     <Modal.Body>Here are some enhancements I would like to make:
                             <ul>
                             <li>Remove margin from righthand side</li>
-                            <li>✅Save background choice</li>
+                            <li>✅ Save background choice</li>
                             <li>Allow profile to be created</li>
                             <li>Create API backend to manage accounts</li>
                             <li>Make mad, mad cash</li>
@@ -255,6 +262,7 @@ class Game extends React.Component {
                     <Col xs={12} sm={4} className="infoDiv">
                         {/* <div className="infoDiv"> */}
                         <h5>Current Game Info</h5>
+                        <div className="card-remaining-icon-div">{cardsRemainingIcons}</div>
                         <div className="stat-line">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div>
                         <div className="stat-line">Previous guess: {this.previousGuess}</div>
                         <div className="stat-line">Card drawn: {this.cardDrawn}</div>
@@ -346,7 +354,11 @@ class Game extends React.Component {
                         {/* {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null} */}
                         {this.state.isThePlayerACheater && this.formattedCardsRemainingList.map((card) => <div>{card}</div>)}
                     </Col>
-                    <Col xs={12} sm={8}>
+                    <Col xs={12} sm={8}
+                    className="col-override" 
+                    // <Col xs={12} sm={8} 
+                    // style={{display: 'flex', }}
+                    >
                         {this.state.gameState[this.state.gameState.length - 1].gameLost === true &&
                             <div className="you-lose-overlay">
                                 <div className="you-lose-modal">
@@ -365,6 +377,8 @@ class Game extends React.Component {
                             </div>
                         }
                         <Board
+                            // style={{    flex: '1 1 auto',
+                            //     minWidth: '0'}}
                             squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
                             evaluateGuess={(i, higherLowerOrSamesies) => this.handleGuessAndManageState(i, higherLowerOrSamesies)}
                             selectedBackground={this.state.selectedBackground}
@@ -372,6 +386,7 @@ class Game extends React.Component {
                     </Col>
                 </Row>
             </Container>
+            // </div>
         );
     }
 }
