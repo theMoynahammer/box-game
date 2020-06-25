@@ -3,7 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 const incorrectGuessCardFormat = {
     spotIsStillValid: false,
-    imgPath: process.env.PUBLIC_URL + `/cardback.jpg`
+    imgPath: process.env.PUBLIC_URL + `/cardback.svg`
 };
 
 const getRandomCardIndex = (lengthOfCardsRemainingArray) => Math.floor(Math.random() * lengthOfCardsRemainingArray);
