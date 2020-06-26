@@ -7,9 +7,9 @@ class Board extends React.Component {
     renderSquare(i) {
         return (
             <Square
-                guessLower={() => this.props.evaluateGuess(i, 'Lower')}
-                guessSamesies={() => this.props.evaluateGuess(i, 'Samesies')}
-                guessHigher={() => this.props.evaluateGuess(i, 'Higher')}
+                guessLower={() => this.props.evaluateGuess(i, 'lower')}
+                guessSamesies={() => this.props.evaluateGuess(i, 'samesies')}
+                guessHigher={() => this.props.evaluateGuess(i, 'higher')}
                 imgPath={this.props.squares[i].imgPath}
                 spotIsStillValid={this.props.squares[i].spotIsStillValid}
             />
@@ -36,35 +36,35 @@ class Board extends React.Component {
                 padding: '10px 0px' }}>
                 <Row className="refactored-row">
                     {/* TODO use card-box class and center everything */}
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(0)}
                     </Col>
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(1)}
                     </Col>
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(2)}
                     </Col>
                 </Row>
                 <Row className="refactored-row">
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(3)}
                     </Col>
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(4)}
                     </Col>
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(5)}
                     </Col>
                 </Row>
                 <Row className="refactored-row">
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(6)}
                     </Col>
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(7)}
                     </Col>
-                    <Col>
+                    <Col className="col-override">
                         {this.renderSquare(8)}
                     </Col>
                 </Row>

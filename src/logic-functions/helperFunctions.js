@@ -31,13 +31,13 @@ const setGameWonProperty = ({currentBoard, cardsRemaining}) => {
 } 
 
 const wasGuessCorrect = (currentCardStrength, chosenCardStrength, higherLowerOrSamesies) =>{
-    if (higherLowerOrSamesies === 'Higher'){
+    if (higherLowerOrSamesies === 'higher'){
         return chosenCardStrength>currentCardStrength;
     }
-    else if (higherLowerOrSamesies === 'Lower'){
+    else if (higherLowerOrSamesies === 'lower'){
         return chosenCardStrength<currentCardStrength;
     }
-    else if (higherLowerOrSamesies === 'Samesies'){
+    else if (higherLowerOrSamesies === 'samesies'){
         return chosenCardStrength === currentCardStrength;
     }
 }
@@ -74,6 +74,8 @@ const evaluateGuess = (i, higherLowerOrSamesies, currentState) => {
     const chosenCardDetails = newState.cardsRemaining[newRandomCardIndex];
     const cardDrawn = `${chosenCardDetails.name ? chosenCardDetails.name : chosenCardDetails.displayValue} of ${chosenCardDetails.suit}`;
     const previousCard = `${currentCard.name ? currentCard.name : currentCard.displayValue} of ${currentCard.suit}`;
+    const previousCardImageUrl = currentCard.imgPath;
+    const currentCardImageUrl = chosenCardDetails.imgPath;
     const chosenCardStrength = chosenCardDetails.strength;
     const newNumberOfSamesies = chosenCardStrength === currentCardStrength ? currentState.numberOfSamesies + 1 : currentState.numberOfSamesies;
     // const guessWasCorrect = higherLowerOrSamesies === 'higher' ? chosenCardStrength > currentCardStrength : chosenCardStrength < currentCardStrength;
@@ -88,6 +90,9 @@ const evaluateGuess = (i, higherLowerOrSamesies, currentState) => {
     newState.cardDrawn = cardDrawn;
     newState.previousCard = previousCard;
     newState.previousGuess = higherLowerOrSamesies;
+    newState.guessWasCorrect = guessWasCorrect;
+    newState.previousCardImageUrl = previousCardImageUrl;
+    newState.currentCardImageUrl = currentCardImageUrl;
     return {
         newState,
     };
