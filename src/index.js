@@ -8,7 +8,7 @@ import './index.css';
 
 ReactDOM.render((
 /* <Router history = {browserHistory}> */
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
 
     <Route exact path = "/" component = {Game}/>
        {/* <IndexRoute component = {Game} /> */}
