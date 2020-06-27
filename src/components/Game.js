@@ -237,7 +237,15 @@ class Game extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>How to Play</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>To </Modal.Body>
+                    <Modal.Body>
+                        <strong>Intro: </strong>The Box Game started out as a drinking game at Virginia Tech, and now
+                        it's being presented to you by Connor. <br/><br/>
+                        <strong>Objective:</strong> Go through the 52 card deck before all 9 card piles are flipped over. On your turn,
+                        choose Higher or Lower on one of the available piles by clicking the top half or bottom half of the card. If you are
+                        correct, the pile remains available. If you are wrong, the pile is flipped over and is no longer available for selection.
+                        <br/><br/>
+                        <strong>Stats/Unlockables</strong> There are rewards for winning X number of games. Keep playing to see if you can unlock them all.
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.toggleModal('showHelpModal')}>
                             Close
