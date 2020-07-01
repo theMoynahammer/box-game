@@ -110,6 +110,8 @@ class Game extends React.Component {
     setBackground = (selectedBackground) => {
         localStorage.setItem('backgroundPreference', selectedBackground);
         this.setState({ selectedBackground })
+        console.log(process.env.PUBLIC_URL)
+        console.log('version updated')
     }
 
     handleWinLossStats = (gameWon) => {
