@@ -20,7 +20,7 @@ import { GoArrowUp, GoArrowDown } from 'react-icons/go';
 import { Board } from './Board';
 // related to socket testing
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://127.0.0.1:8080";
+// const ENDPOINT = "http://127.0.0.1:8080";
 
 class Game extends React.Component {
     constructor(props) {
@@ -66,12 +66,13 @@ class Game extends React.Component {
       componentDidMount() {
         this.connectToSocket();
       }
-      componentDidUpdate() {
-        this.connectToSocket();
-      }  
+    //   componentDidUpdate() {
+    //     this.connectToSocket();
+    //   }  
 
     connectToSocket = () =>{
         this.socket = socketIOClient(ENDPOINT);
+        this.socket.emit("joining game");
         this.socket.on("newState", newState => {
           this.setState({
             gameState: [...this.state.gameState, newState],
@@ -80,8 +81,8 @@ class Game extends React.Component {
     }
 
     emitToSocket = (newState) =>{
-        console.log('oo')
-        this.socket = socketIOClient(ENDPOINT);
+        // console.log('oo')
+        // this.socket = socketIOClient(ENDPOINT);
         this.socket.emit('newState', newState);
     }
 
@@ -124,7 +125,8 @@ class Game extends React.Component {
         this.previousGuess = null;
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         const initialState = getInitialState(cardsRemaining, initialBoard);
-        this.setState({ gameState: [initialState] });
+        this.emitToSocket(initialState)
+        // this.setState({ gameState: [initialState] });
     }
 
     clearStats = () => {

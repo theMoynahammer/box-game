@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Link, BrowserRouter, IndexRoute } from 'react-router-dom';
 import TestSocket from './components/TestingSocket';
-import BoxGameSocket from './components/BoxGameSocket';
+import Multiplayer from './components/Multiplayer';
 import { Game } from './components/Game';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -14,7 +14,7 @@ ReactDOM.render((
     <Route exact path = "/" component = {Game}/>
        {/* <IndexRoute component = {Game} /> */}
        <Route exact path="/testing" component={TestSocket} />
-       <Route exact path="/boxgame" component={BoxGameSocket} />
+       <Route exact path="/multiplayer" component={Multiplayer} />
        {/* <Route path = "about" component = {About} />
        <Route path = "contact" component = {Contact} /> */}
     {/* </Route> */}
