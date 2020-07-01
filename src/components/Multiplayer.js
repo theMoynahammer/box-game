@@ -71,9 +71,20 @@ class Game extends React.Component {
     //   }  
 
     connectToSocket = () =>{
+        console.log('connectToSocket')
         this.socket = socketIOClient(ENDPOINT);
         this.socket.emit("joining game");
+        this.socket.on("joiningGameState", response =>{
+            console.log('this is the response', response)
+            if (!response) {this.emitToSocket(this.state.gameState[this.state.gameState.length - 1])}
+            else {
+                this.setState({
+                    gameState: [...this.state.gameState, response],
+                  })
+            }
+        })
         this.socket.on("newState", newState => {
+            console.log('getting new state', newState)
           this.setState({
             gameState: [...this.state.gameState, newState],
           })
