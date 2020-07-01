@@ -20,7 +20,7 @@ import { GoArrowUp, GoArrowDown } from 'react-icons/go';
 import { Board } from './Board';
 // related to socket testing
 import socketIOClient from "socket.io-client";
-// const ENDPOINT = "http://127.0.0.1:8080";
+const ENDPOINT = "http://127.0.0.1:8080";
 
 class Game extends React.Component {
     constructor(props) {
