@@ -16,8 +16,9 @@ import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { FaQuestion, FaStickyNote } from 'react-icons/fa';
-import { GoArrowUp, GoArrowDown } from 'react-icons/go';
 import { Board } from './Board';
+import Modals from './Modals';
+import CurrentGameInfo from './CurrentGameInfo';
 
 class Game extends React.Component {
     constructor(props) {
@@ -158,9 +159,9 @@ class Game extends React.Component {
     }
 
     render() {
-        const cardsRemainingIcons = this.state.gameState[this.state.gameState.length - 1].cardsRemaining.map(() =>
-            <img className="cards-remaining-card" src={process.env.PUBLIC_URL + `/cardback.jpg`} alt="not found :("></img>
-        );
+        // const cardsRemainingIcons = this.state.gameState[this.state.gameState.length - 1].cardsRemaining.map(() =>
+        //     <img className="cards-remaining-card" src={process.env.PUBLIC_URL + `/cardback.jpg`} alt="not found :("></img>
+        // );
         // const guessIcon = this.previousGuess === 'lower' ? <GoArrowDown className="guess-icon"/> : <GoArrowUp className="guess-icon"/>
         return (
             // <React.Fragment>
@@ -206,6 +207,7 @@ class Game extends React.Component {
                         <FaQuestion onClick={() => this.toggleModal('showHelpModal')} style={{ width: '20px', height: '20px', cursor: 'pointer', color: 'white' }} />
                     </Navbar.Collapse>
                 </Navbar>
+                {/* <Modals testing="ok"></Modals> */}
                 <Modal centered={true} show={this.state.showNotesModal} onHide={() => this.toggleModal('showNotesModal')}>
                     <Modal.Header closeButton>
                         <Modal.Title>Connor's Future Enhancements</Modal.Title>
@@ -241,11 +243,11 @@ class Game extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <strong>Intro: </strong>The Box Game started out as a drinking game at Virginia Tech, and now
-                        it's being presented to you by Connor. <br/><br/>
+                        it's being presented to you by Connor. <br /><br />
                         <strong>Objective:</strong> Go through the 52 card deck before all 9 card piles are flipped over. On your turn,
                         choose Higher or Lower on one of the available piles by clicking the top half or bottom half of the card. If you are
                         correct, the pile remains available. If you are wrong, the pile is flipped over and is no longer available for selection.
-                        <br/><br/>
+                        <br /><br />
                         <strong>Stats/Unlockables</strong> There are rewards for winning X number of games. Keep playing to see if you can unlock them all.
                     </Modal.Body>
                     <Modal.Footer>
@@ -275,48 +277,11 @@ class Game extends React.Component {
                     <Col xs={12} sm={4} className="infoDiv">
                         {/* <div className="infoDiv"> */}
                         {/* <h5>Current Game Info</h5> */}
-                        <div className="card-remaining-icon-div">{cardsRemainingIcons}</div>
-                        {/* <div className="stat-line">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div> */}
-                        {/* <div className="stat-line">Previous guess: {this.previousGuess && guessIcon}</div>
-                        <div className="stat-line">Card drawn: 
-                        {this.state.gameState[this.state.gameState.length - 1].currentCardImageUrl&& <img className= "card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].currentCardImageUrl}/>}
-                        </div>
-                        <div className="stat-line">Previous card: 
-                        {this.state.gameState[this.state.gameState.length - 1].previousCardImageUrl && <img className= "card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].previousCardImageUrl}/>}
-                        </div> */}
-                        {this.previousGuess && <table class="table table-override-cards">
-                                            {/* <thead>
-                                            <tr>
-      <th scope="col">Previous Card</th>
-      <th scope="col">Guess</th>
-      <th scope="col">Card Drawn</th>
-    </tr>
-                                            </thead> */}
-                                            <tbody>
-                                            <tr className="guess-tr">
-                                                    <td className="guess-td guess-td-top">Previous</td>
-                                                    <td className="guess-td guess-td-top">Guess</td>
-                                                    <td className="guess-td guess-td-top">Drawn</td>
-                                                    {/* <td>Thornton</td> */}
-                                                </tr>
-                                                <tr className="guess-tr">
-                                                    <td className="guess-td"><img className="card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].previousCardImageUrl} /></td>
-                                        <td className="guess-td" style={{...(!this.state.gameState[this.state.gameState.length - 1].guessWasCorrect && {color: 'red'})}}>{this.previousGuess === 'lower' ? <GoArrowDown className="guess-icon"/> : <GoArrowUp className="guess-icon"/>}</td>
-                                                    <td className="guess-td"><img className="card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].currentCardImageUrl} /></td>
-                                                    {/* <td>Thornton</td> */}
-                                                </tr>
-                                            </tbody>
-                                        </table> }
-                        {/* {this.previousGuess &&
-                            <div>
-                                <img className="card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].previousCardImageUrl} />
-                                {guessIcon}
-                                <img className="card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].currentCardImageUrl} />
-                            </div>
-                        } */}
-
-                        {/* <div className="stat-line">Number of samesies: {this.numberOfSamesies}</div> */}
-                        <Button className="info-div-buttons"variant="outline-danger" size="sm" onClick={() => this.resetGame(true)}>Rage Quit</Button>
+                        <CurrentGameInfo
+                            currentState={this.state.gameState[this.state.gameState.length-1]}
+                            previousGuess={this.previousGuess}
+                            resetGame={(rageQuit)=>this.resetGame(rageQuit)}
+                            />
                         <hr className="custom-hr" />
                         <div className="stats-header">Stats</div>
                         <div className="stat-line">Total Wins: {this.state.totalWins}</div>
@@ -327,10 +292,11 @@ class Game extends React.Component {
                         <div className="stat-line">Winning Percentage: {this.state.totalWins + this.state.totalLosses !== 0 ? Number(this.state.totalWins / (this.state.totalWins + this.state.totalLosses)).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 }) : 'N/A'}</div>
                         <div className="stat-line">Current Streak: {this.currentStreakNumber ? `${this.currentStreakNumber} ${this.currentStreakType} in a row` : 'N/A'}</div>
                         <div className="stat-line">Rage Quits: {this.state.rageQuits}</div>
-                        <Button className="info-div-buttons" variant="outline-warning" size="sm" onClick={() => this.toggleModal('showStatResetModal')}>Reset Stats</Button>
+                        <Button className="info-div-buttons" variant="outline-warning" size="sm" onClick={() => this.toggleModal('showStatResetModal')}>Reset Stats</Button>    
                         <hr className="custom-hr" />
-                        <div className="stats-header">Unlockables</div>
-                        {/* <table class="table">
+                        <div id="unlockables-section">
+                            <div className="stats-header">Unlockables</div>
+                            {/* <table class="table">
   <thead>
     <tr>
       <th scope="col">Wins Needed</th>
@@ -356,38 +322,38 @@ class Game extends React.Component {
     </tr>
   </tbody>
 </table> */}
-                        {this.state.showCardsRemainingUnlocked ?
-                            <Form.Check
-                                // disabled={!this.state.showCardsRemainingUnlocked}
-                                inline
-                                name="isThePlayerACheater"
-                                type="checkbox"
-                                id="custom-switch"
-                                checked={this.state.isThePlayerACheater}
-                                onChange={this.handleCheatingCheckbox}
-                                label="Show remaining card counts"
-                            />
-                            :
-                            <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">You must win one game to unlock this</Tooltip>}>
-                                <div style={{ height: '30px', paddingTop: '10px' }} className="d-inline-block">
-                                    {/* <Button disabled style={{ pointerEvents: 'none' }}>
+                            {this.state.showCardsRemainingUnlocked ?
+                                <Form.Check
+                                    // disabled={!this.state.showCardsRemainingUnlocked}
+                                    inline
+                                    name="isThePlayerACheater"
+                                    type="checkbox"
+                                    id="custom-switch"
+                                    checked={this.state.isThePlayerACheater}
+                                    onChange={this.handleCheatingCheckbox}
+                                    label="Show remaining card counts"
+                                />
+                                :
+                                <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">You must win one game to unlock this</Tooltip>}>
+                                    <div style={{ height: '30px', paddingTop: '10px' }} className="d-inline-block">
+                                        {/* <Button disabled style={{ pointerEvents: 'none' }}>
                             Disabled button
                              </Button> */}
-                                    <Form>
-                                        <Form.Check
-                                            disabled={!this.state.showCardsRemainingUnlocked}
-                                            inline
-                                            name="isThePlayerACheater"
-                                            type="checkbox"
-                                            id="custom-switch"
-                                            checked={this.state.isThePlayerACheater}
-                                            onChange={this.handleCheatingCheckbox}
-                                            label="Show remaining card counts"
-                                        />
-                                    </Form>
-                                </div>
-                            </OverlayTrigger>}
-                        {/* <Form>
+                                        <Form>
+                                            <Form.Check
+                                                disabled={!this.state.showCardsRemainingUnlocked}
+                                                inline
+                                                name="isThePlayerACheater"
+                                                type="checkbox"
+                                                id="custom-switch"
+                                                checked={this.state.isThePlayerACheater}
+                                                onChange={this.handleCheatingCheckbox}
+                                                label="Show remaining card counts"
+                                            />
+                                        </Form>
+                                    </div>
+                                </OverlayTrigger>}
+                            {/* <Form>
                             <Form.Check
                                 disabled={true}
                                 inline
@@ -399,8 +365,9 @@ class Game extends React.Component {
                                 label="Show remaining card counts"
                             />
                         </Form> */}
-                        {/* {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null} */}
-                        {this.state.isThePlayerACheater && this.formattedCardsRemainingList.map((card) => <div>{card}</div>)}
+                            {/* {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null} */}
+                            {this.state.isThePlayerACheater && this.formattedCardsRemainingList.map((card) => <div>{card}</div>)}
+                        </div>
                     </Col>
                     <Col xs={12} sm={8}
                         className="col-override"

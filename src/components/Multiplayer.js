@@ -18,6 +18,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import { FaQuestion, FaStickyNote } from 'react-icons/fa';
 import { GoArrowUp, GoArrowDown } from 'react-icons/go';
 import { Board } from './Board';
+import CurrentGameInfo from './CurrentGameInfo';
 // related to socket testing
 import socketIOClient from "socket.io-client";
 const ENDPOINT = "http://127.0.0.1:8080";
@@ -317,50 +318,11 @@ class Game extends React.Component {
                 </Modal>
                 <Row className="main-row">
                     <Col xs={12} sm={4} className="infoDiv">
-                        {/* <div className="infoDiv"> */}
-                        {/* <h5>Current Game Info</h5> */}
-                        <div className="card-remaining-icon-div">{cardsRemainingIcons}</div>
-                        {/* <div className="stat-line">Cards remaining: {this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</div> */}
-                        {/* <div className="stat-line">Previous guess: {this.previousGuess && guessIcon}</div>
-                        <div className="stat-line">Card drawn: 
-                        {this.state.gameState[this.state.gameState.length - 1].currentCardImageUrl&& <img className= "card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].currentCardImageUrl}/>}
-                        </div>
-                        <div className="stat-line">Previous card: 
-                        {this.state.gameState[this.state.gameState.length - 1].previousCardImageUrl && <img className= "card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].previousCardImageUrl}/>}
-                        </div> */}
-                        {this.previousGuess && <table class="table table-override-cards">
-                                            {/* <thead>
-                                            <tr>
-      <th scope="col">Previous Card</th>
-      <th scope="col">Guess</th>
-      <th scope="col">Card Drawn</th>
-    </tr>
-                                            </thead> */}
-                                            <tbody>
-                                            <tr className="guess-tr">
-                                                    <td className="guess-td guess-td-top">Previous</td>
-                                                    <td className="guess-td guess-td-top">Guess</td>
-                                                    <td className="guess-td guess-td-top">Drawn</td>
-                                                    {/* <td>Thornton</td> */}
-                                                </tr>
-                                                <tr className="guess-tr">
-                                                    <td className="guess-td"><img className="card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].previousCardImageUrl} /></td>
-                                        <td className="guess-td" style={{...(!this.state.gameState[this.state.gameState.length - 1].guessWasCorrect && {color: 'red'})}}>{this.previousGuess === 'lower' ? <GoArrowDown className="guess-icon"/> : <GoArrowUp className="guess-icon"/>}</td>
-                                                    <td className="guess-td"><img className="card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].currentCardImageUrl} /></td>
-                                                    {/* <td>Thornton</td> */}
-                                                </tr>
-                                            </tbody>
-                                        </table> }
-                        {/* {this.previousGuess &&
-                            <div>
-                                <img className="card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].previousCardImageUrl} />
-                                {guessIcon}
-                                <img className="card-images-guess" src={this.state.gameState[this.state.gameState.length - 1].currentCardImageUrl} />
-                            </div>
-                        } */}
-
-                        {/* <div className="stat-line">Number of samesies: {this.numberOfSamesies}</div> */}
-                        <Button className="info-div-buttons"variant="outline-danger" size="sm" onClick={() => this.resetGame(true)}>Rage Quit</Button>
+                    <CurrentGameInfo
+                            currentState={this.state.gameState[this.state.gameState.length-1]}
+                            previousGuess={this.previousGuess}
+                            resetGame={(rageQuit)=>this.resetGame(rageQuit)}
+                            />
                         <hr className="custom-hr" />
                         <div className="stats-header">Stats</div>
                         <div className="stat-line">Total Wins: {this.state.totalWins}</div>
@@ -374,32 +336,6 @@ class Game extends React.Component {
                         <Button className="info-div-buttons" variant="outline-warning" size="sm" onClick={() => this.toggleModal('showStatResetModal')}>Reset Stats</Button>
                         <hr className="custom-hr" />
                         <div className="stats-header">Unlockables</div>
-                        {/* <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Wins Needed</th>
-      <th scope="col">Ability</th>
-      <th scope="col">Activate?</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Show Remaining Card Counts</td>
-      <td>Otto</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-    </tr>
-  </tbody>
-</table> */}
                         {this.state.showCardsRemainingUnlocked ?
                             <Form.Check
                                 // disabled={!this.state.showCardsRemainingUnlocked}
@@ -431,25 +367,10 @@ class Game extends React.Component {
                                     </Form>
                                 </div>
                             </OverlayTrigger>}
-                        {/* <Form>
-                            <Form.Check
-                                disabled={true}
-                                inline
-                                name="isThePlayerACheater"
-                                type="checkbox"
-                                id="custom-switch"
-                                checked={this.state.isThePlayerACheater}
-                                onChange={this.handleCheatingCheckbox}
-                                label="Show remaining card counts"
-                            />
-                        </Form> */}
-                        {/* {this.state.gameState[this.state.gameState.length - 1].gameWon === true ? <h4>You Win! You're a genius!</h4> : null} */}
                         {this.state.isThePlayerACheater && this.formattedCardsRemainingList.map((card) => <div>{card}</div>)}
                     </Col>
                     <Col xs={12} sm={8}
                         className="col-override"
-                    // <Col xs={12} sm={8} 
-                    // style={{display: 'flex', }}
                     >
                         {this.state.gameState[this.state.gameState.length - 1].gameLost === true &&
                             <div className="you-lose-overlay">
@@ -458,27 +379,15 @@ class Game extends React.Component {
                                     <div className="game-summary">
                                         <table class="table table-override">
                                             <thead>
-                                                {/* <tr>
-      <th scope="col">Wins Needed</th>
-      <th scope="col">Ability</th>
-      <th scope="col">Activate?</th>
-    </tr> */}
                                             </thead>
                                             <tbody>
-                                                {/* <tr>
-      <th scope="row">1</th>
-      <td>Show Remaining Card Counts</td>
-      <td>Otto</td>
-    </tr> */}
                                                 <tr>
                                                     <th scope="row">Cards Remaining</th>
                                                     <td>{this.state.gameState[this.state.gameState.length - 1].cardsRemaining.length}</td>
-                                                    {/* <td>Thornton</td> */}
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">Number of Samesies</th>
                                                     <td>{this.numberOfSamesies}</td>
-                                                    {/* <td>the Bird</td> */}
                                                 </tr>
                                             </tbody>
                                         </table>

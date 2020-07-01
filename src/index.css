@@ -16,6 +16,18 @@ body {
   flex: 0 0 25em; */
 }
 
+#current-game-info{
+
+}
+
+#stats-section{
+
+}
+
+#unlockables-section{
+  
+}
+
 #root{
   min-width: 100%;
 }
