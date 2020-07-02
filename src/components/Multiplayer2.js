@@ -22,9 +22,8 @@ import CurrentGameInfo from './CurrentGameInfo';
 // related to socket testing
 import socketIOClient from "socket.io-client";
 // const ENDPOINT = "http://127.0.0.1:8080/multiplayer1";
-// const ENDPOINT = "http://127.0.0.1:8080";
 const ENDPOINT = "https://morning-shore-03481.herokuapp.com"
-const GAME_NUMBER = 1;
+const GAME_NUMBER = 2;
 
 class Game extends React.Component {
     constructor(props) {
