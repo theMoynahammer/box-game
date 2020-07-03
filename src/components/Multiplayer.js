@@ -18,6 +18,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { FaQuestion, FaStickyNote } from 'react-icons/fa';
 import { GoArrowUp, GoArrowDown } from 'react-icons/go';
+import {FcCheckmark, FcCancel} from 'react-icons/fc';
 import { Board } from './Board';
 import CurrentGameInfo from './CurrentGameInfo';
 // related to socket testing
@@ -99,7 +100,12 @@ class Game extends React.Component {
         });
     }
 
+    componentWillUnmount(){
+
+    }
+
     emitToSocket = (newState) => {
+        console.log(newState)
         // console.log('oo')
         // this.socket = socketIOClient(ENDPOINT);
         this.socket.emit(`newState${this.props.gameNumber}`, newState);
@@ -115,6 +121,9 @@ class Game extends React.Component {
         this.previousCard = previousCard;
         this.numberOfSamesies = numberOfSamesies;
         this.previousGuess = previousGuess;
+        newState.playersWhoGuessedLast = [...currentState.playersWhoGuessedLast ? currentState.playersWhoGuessedLast : [], {playerName: this.state.playerName, guessWasCorrect: newState.guessWasCorrect.toString()}]
+        // newState.playersWhoGuessedLast =  this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast && this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast.length === 0?
+        //     [this.state.playerName] : [...this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast, ...this.state.playerName];
         this.formattedCardsRemainingList = formatRemainingCardsCount(newState.cardsRemaining)
         this.emitToSocket(newState)
         // this.setState({
@@ -373,16 +382,21 @@ class Game extends React.Component {
                             resetGame={(rageQuit) => this.resetGame(rageQuit)}
                         />
                         <hr className="custom-hr" />
-                        <div className="stats-header">Stats</div>
+                        <div className="stats-header">Previous Guesses</div>
+                        {/* {this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast} */}
+                        {/* {`${this.state.gameState[this.state.gameState.length - 1].guessWasCorrect}`} */}
+
+                        {this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast && this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast.slice(-5).map((item)=>{
+                            return <div>{item.playerName} {item.guessWasCorrect === 'true' ? <FcCheckmark/>:<FcCancel/>}</div>
+                        }).reverse()}
+                        
+                        {/* <div className="stats-header">Stats</div>
                         <div className="stat-line">Total Wins: {this.state.totalWins}</div>
                         <div className="stat-line">Total Losses: {this.state.totalLosses}</div>
-                        {/* <div className="stat-line">Winning Percentage: {this.state.totalWins+this.state.totalLosses !== 0 ? parseFloat((this.state.totalWins/(this.state.totalWins+this.state.totalLosses))).toFixed(2)+"%" : 'N/A'}</div> */}
-                        {/* var s = Number(num/100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2});  */}
-
                         <div className="stat-line">Winning Percentage: {this.state.totalWins + this.state.totalLosses !== 0 ? Number(this.state.totalWins / (this.state.totalWins + this.state.totalLosses)).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 }) : 'N/A'}</div>
                         <div className="stat-line">Current Streak: {this.currentStreakNumber ? `${this.currentStreakNumber} ${this.currentStreakType} in a row` : 'N/A'}</div>
                         <div className="stat-line">Rage Quits: {this.state.rageQuits}</div>
-                        <Button className="info-div-buttons" variant="outline-warning" size="sm" onClick={() => this.toggleModal('showStatResetModal')}>Reset Stats</Button>
+                        <Button className="info-div-buttons" variant="outline-warning" size="sm" onClick={() => this.toggleModal('showStatResetModal')}>Reset Stats</Button> */}
                         <hr className="custom-hr" />
                         <div className="stats-header">Unlockables</div>
                         {this.state.showCardsRemainingUnlocked ?
