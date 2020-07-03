@@ -386,7 +386,7 @@ class Game extends React.Component {
                         {/* {this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast} */}
                         {/* {`${this.state.gameState[this.state.gameState.length - 1].guessWasCorrect}`} */}
 
-                        {this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast && this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast.slice(-5).map((item)=>{
+                        {this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast && this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast.slice(-10).map((item)=>{
                             return <div>{item.playerName} {item.guessWasCorrect === 'true' ? <FcCheckmark/>:<FcCancel/>}</div>
                         }).reverse()}
                         
