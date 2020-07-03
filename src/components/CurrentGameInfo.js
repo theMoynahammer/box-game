@@ -11,7 +11,7 @@ const CurrentGameInfo = ({currentState, previousGuess, resetGame}) => {
     return (
         <div id="current-game-info">
             <div className="card-remaining-icon-div">{cardsRemainingIcons}</div>
-            {/* {previousGuess && <table class="table table-override-cards">
+            {previousGuess && <table class="table table-override-cards">
                 <tbody>
                     <tr className="guess-tr">
                         <td className="guess-td guess-td-top">Previous</td>
@@ -24,7 +24,7 @@ const CurrentGameInfo = ({currentState, previousGuess, resetGame}) => {
                         <td className="guess-td"><img className="card-images-guess" src={currentState.currentCardImageUrl} /></td>
                     </tr>
                 </tbody>
-            </table>} */}
+            </table>}
             <Button className="info-div-buttons" variant="outline-danger" size="sm" onClick={()=>resetGame(true)}>Rage Quit</Button>
         </div>
     );

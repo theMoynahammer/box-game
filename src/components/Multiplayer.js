@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { evaluateGuess, formatRemainingCardsCount } from '../logic-functions/helperFunctions';
 import { getInitialBoardAndCardsRemaining, getInitialState } from '../logic-functions/setUpInitialBoard';
@@ -24,7 +25,7 @@ import socketIOClient from "socket.io-client";
 // const ENDPOINT = "http://127.0.0.1:8080/multiplayer1";
 // const ENDPOINT = "http://127.0.0.1:8080";
 const ENDPOINT = "https://morning-shore-03481.herokuapp.com"
-const GAME_NUMBER = 1;
+// const GAME_NUMBER = 1;
 
 class Game extends React.Component {
     constructor(props) {
@@ -37,7 +38,7 @@ class Game extends React.Component {
         this.state = {
             gameState: [initialState],
             isThePlayerACheater: false,
-            selectedBackground: localStorage.getItem('backgroundPreference') || 'amEx',
+            // selectedBackground: localStorage.getItem('backgroundPreference') || 'amEx',
             showHelpModal: false,
             showNotesModal: false,
             showStatResetModal: false,
@@ -45,6 +46,9 @@ class Game extends React.Component {
             totalWins,
             totalLosses,
             showCardsRemainingUnlocked: totalWins >= 1 ? true : false,
+            playerName: localStorage.getItem('playerName') || null,
+            selectedBackground: localStorage.getItem('backgroundPreference') || 'amEx',
+            missingPlayerName: this.playerName ? false : true,
         }
     }
 
@@ -59,6 +63,7 @@ class Game extends React.Component {
     // totalWins = localStorage.getItem('totalWins') || 0;
     // totalLosses = localStorage.getItem('totalLosses') || 0;
     previousOutcome = null;
+    // playerName = null;
 
     // useEffect(() => {
     //     const socket = socketIOClient(ENDPOINT);
@@ -67,36 +72,37 @@ class Game extends React.Component {
     //     });
     //   }, []);
 
-      componentDidMount() {
+    componentDidMount() {
         this.connectToSocket();
-      }
-    //   componentDidUpdate() {
-    //     this.connectToSocket();
-    //   }  
+        if (this.state.playerName) {
+            this.state.missingPlayerName = false;
+        }
+        // this.checkForName()
 
-    connectToSocket = () =>{
+    }
+
+    connectToSocket = () => {
         this.socket = socketIOClient(ENDPOINT);
-        this.socket.emit(`joining game ${GAME_NUMBER}`);
-        this.socket.on(`joiningGameState${GAME_NUMBER}`, response =>{
-            if (!response) {this.emitToSocket(this.state.gameState[this.state.gameState.length - 1])}
+        this.socket.emit(`joining game ${this.props.gameNumber}`);
+        this.socket.on(`joiningGameState${this.props.gameNumber}`, response => {
+            if (!response) { this.emitToSocket(this.state.gameState[this.state.gameState.length - 1]) }
             else {
                 this.setState({
                     gameState: [...this.state.gameState, response],
-                  })
+                })
             }
         })
-        this.socket.on(`newState${GAME_NUMBER}`, newState => {
-            console.log('getting new state', newState)
-          this.setState({
-            gameState: [...this.state.gameState, newState],
-          })
+        this.socket.on(`newState${this.props.gameNumber}`, newState => {
+            this.setState({
+                gameState: [...this.state.gameState, newState],
+            })
         });
     }
 
-    emitToSocket = (newState) =>{
+    emitToSocket = (newState) => {
         // console.log('oo')
         // this.socket = socketIOClient(ENDPOINT);
-        this.socket.emit(`newState${GAME_NUMBER}`, newState);
+        this.socket.emit(`newState${this.props.gameNumber}`, newState);
     }
 
     handleGuessAndManageState(i, higherLowerOrSamesies) {
@@ -115,6 +121,10 @@ class Game extends React.Component {
         //     gameState: [...this.state.gameState, newState]
         // });
     }
+
+    // savePlayerInfo = () =>{
+    //     alert('info is saved')
+    // }
 
     toggleModal = (modalToChange) => {
         // Options are:
@@ -155,9 +165,21 @@ class Game extends React.Component {
         })
     }
 
+    handleChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
     setBackground = (selectedBackground) => {
         localStorage.setItem('backgroundPreference', selectedBackground);
         this.setState({ selectedBackground })
+    }
+
+    savePlayerInfo = () => {
+        if (this.state.playerName) {
+            this.setState({ missingPlayerName: false })
+            localStorage.setItem('playerName', this.state.playerName)
+        }
+        localStorage.setItem('backgroundPreference', this.state.selectedBackground)
     }
 
     handleWinLossStats = (gameWon) => {
@@ -192,7 +214,6 @@ class Game extends React.Component {
     }
 
     handleUnlocks = () => {
-        console.log(this.state.totalWins === 1)
         this.setState({
             ...(this.state.totalWins === 1 && { showCardsRemainingUnlocked: true })
         })
@@ -204,14 +225,7 @@ class Game extends React.Component {
     }
 
     render() {
-        const cardsRemainingIcons = this.state.gameState[this.state.gameState.length - 1].cardsRemaining.map(() =>
-            <img className="cards-remaining-card" src={process.env.PUBLIC_URL + `/cardback.jpg`} alt="not found :("></img>
-        );
-        // const guessIcon = this.previousGuess === 'lower' ? <GoArrowDown className="guess-icon"/> : <GoArrowUp className="guess-icon"/>
         return (
-            // <React.Fragment>
-            // <Container fluid className="container-override">
-            // <div>
             <Container fluid='lg' style={{ backgroundColor: 'white', padding: '0px' }}>
                 <Navbar bg="dark" variant="dark">
                     {/* <Navbar bg="dark" variant="dark" expand="sm"> */}
@@ -234,7 +248,11 @@ class Game extends React.Component {
                             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                             <Button variant="outline-success">Search</Button>
                         </Form> */}
-                        <Form inline>
+                        <div onClick={() => { this.setState({ missingPlayerName: true }) }} style={{ cursor: 'pointer', textDecoration: 'underline', color: 'white', paddingRight: '16px' }}>
+                            {this.state.playerName}
+                        </div>
+
+                        {/* <Form inline>
                             <NavDropdown title="Background">
                                 <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('amEx')}>AmEx</NavDropdown.Item>
                                 <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('darkPattern')}>Dark Pattern</NavDropdown.Item>
@@ -243,11 +261,8 @@ class Game extends React.Component {
                                 <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('moon')}>Moon</NavDropdown.Item>
                                 <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('underwater')}>Underwater</NavDropdown.Item>
                                 <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('wood')}>Wood</NavDropdown.Item>
-                                {/* <NavDropdown.Item onClick={this.setBackground()}>Something</NavDropdown.Item> */}
-                                {/* <NavDropdown.Divider /> */}
-                                {/* <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item> */}
                             </NavDropdown>
-                        </Form>
+                        </Form> */}
                         <FaStickyNote onClick={() => this.toggleModal('showNotesModal')} style={{ marginRight: '16px', width: '20px', height: '20px', cursor: 'pointer', color: 'white' }}></FaStickyNote>
                         <FaQuestion onClick={() => this.toggleModal('showHelpModal')} style={{ width: '20px', height: '20px', cursor: 'pointer', color: 'white' }} />
                     </Navbar.Collapse>
@@ -281,17 +296,50 @@ class Game extends React.Component {
                         </Button> */}
                     </Modal.Footer>
                 </Modal>
+                <Modal backdrop='static' centered={true} show={this.state.missingPlayerName}>
+                    <Modal.Header >
+                        <Modal.Title>Enter your name and pick a background</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group controlId="exampleForm.ControlInput1">
+                                <Form.Label>Username</Form.Label>
+                                <Form.Control maxLength="12" required name="playerName" onChange={this.handleChange} value={this.state.playerName} type="text" />
+                            </Form.Group>
+                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                <Form.Label>Background Image</Form.Label>
+                                <Form.Control value={this.state.selectedBackground} name="selectedBackground" onChange={this.handleChange}as="select">
+                                    <option value="amEx">AmEx</option>
+                                    <option value="darkPattern">Dark Pattern</option>
+                                    <option value="earth">Earth</option>
+                                    <option value="mars">Mars</option>
+                                    <option value="moon">Moon</option>
+                                    <option value="underwater">Underwater</option>
+                                    <option value="wood">Wood</option>
+                                </Form.Control>
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button role="button" variant="secondary" onClick={() => this.savePlayerInfo()}>
+                            Save
+                        </Button>
+                        {/* <Button variant="primary" onClick={this.toggleHelpModal}>>
+                            Save Changes
+                        </Button> */}
+                    </Modal.Footer>
+                </Modal>
                 <Modal centered={true} show={this.state.showHelpModal} onHide={() => this.toggleModal('showHelpModal')}>
                     <Modal.Header closeButton>
                         <Modal.Title>How to Play</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <strong>Intro: </strong>The Box Game started out as a drinking game at Virginia Tech, and now
-                        it's being presented to you by Connor. <br/><br/>
+                        it's being presented to you by Connor. <br /><br />
                         <strong>Objective:</strong> Go through the 52 card deck before all 9 card piles are flipped over. On your turn,
                         choose Higher or Lower on one of the available piles by clicking the top half or bottom half of the card. If you are
                         correct, the pile remains available. If you are wrong, the pile is flipped over and is no longer available for selection.
-                        <br/><br/>
+                        <br /><br />
                         <strong>Stats/Unlockables</strong> There are rewards for winning X number of games. Keep playing to see if you can unlock them all.
                     </Modal.Body>
                     <Modal.Footer>
@@ -319,11 +367,11 @@ class Game extends React.Component {
                 </Modal>
                 <Row className="main-row">
                     <Col xs={12} sm={4} className="infoDiv">
-                    <CurrentGameInfo
-                            currentState={this.state.gameState[this.state.gameState.length-1]}
+                        <CurrentGameInfo
+                            currentState={this.state.gameState[this.state.gameState.length - 1]}
                             previousGuess={this.previousGuess}
-                            resetGame={(rageQuit)=>this.resetGame(rageQuit)}
-                            />
+                            resetGame={(rageQuit) => this.resetGame(rageQuit)}
+                        />
                         <hr className="custom-hr" />
                         <div className="stats-header">Stats</div>
                         <div className="stat-line">Total Wins: {this.state.totalWins}</div>
@@ -419,6 +467,10 @@ class Game extends React.Component {
             // </div>
         );
     }
+}
+
+Game.propTypes = {
+    gameNumber: PropTypes.number.isRequired,
 }
 
 export default Game;
