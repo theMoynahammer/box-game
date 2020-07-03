@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { evaluateGuess, formatRemainingCardsCount } from '../logic-functions/helperFunctions';
 import { getInitialBoardAndCardsRemaining, getInitialState } from '../logic-functions/setUpInitialBoard';
@@ -19,7 +19,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { FaQuestion, FaStickyNote } from 'react-icons/fa';
 import { GoArrowUp, GoArrowDown } from 'react-icons/go';
-import {FcCheckmark, FcCancel} from 'react-icons/fc';
+import { FcCheckmark, FcCancel } from 'react-icons/fc';
 import { Board } from './Board';
 import CurrentGameInfo from './CurrentGameInfo';
 // related to socket testing
@@ -101,7 +101,7 @@ class Game extends React.Component {
         });
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
 
     }
 
@@ -122,7 +122,7 @@ class Game extends React.Component {
         this.previousCard = previousCard;
         this.numberOfSamesies = numberOfSamesies;
         this.previousGuess = previousGuess;
-        newState.playersWhoGuessedLast = [...currentState.playersWhoGuessedLast ? currentState.playersWhoGuessedLast : [], {playerName: this.state.playerName, guessWasCorrect: newState.guessWasCorrect.toString()}]
+        newState.playersWhoGuessedLast = [...currentState.playersWhoGuessedLast ? currentState.playersWhoGuessedLast : [], { playerName: this.state.playerName, guessWasCorrect: newState.guessWasCorrect.toString() }]
         // newState.playersWhoGuessedLast =  this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast && this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast.length === 0?
         //     [this.state.playerName] : [...this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast, ...this.state.playerName];
         this.formattedCardsRemainingList = formatRemainingCardsCount(newState.cardsRemaining)
@@ -248,18 +248,21 @@ class Game extends React.Component {
                     />
                     {/* <Navbar.Brand style={{ paddingLeft: '5px' }}>The Box Game</Navbar.Brand> */}
                     <Form inline>
-                            <NavDropdown title="The Box Game">
-                                <NavDropdown.Item>
-                                    <Link className="dropdown-item" to="/multiplayer/1">Multiplayer Game #1</Link>
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                    <Link className="dropdown-item" to="/multiplayer/2">Multiplayer Game #2</Link>
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item>
-                                    <Link className="dropdown-item" to="/multiplayer/3">Multiplayer Game #3</Link>
-                                    </NavDropdown.Item>
-                            </NavDropdown>
-                        </Form>
+                        <NavDropdown title="The Box Game">
+                            <NavDropdown.Item>
+                                <Link className="dropdown-item" to="/">Single Player</Link>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Link className="dropdown-item" to="/multiplayer/1">Multiplayer Game #1</Link>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Link className="dropdown-item" to="/multiplayer/2">Multiplayer Game #2</Link>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Link className="dropdown-item" to="/multiplayer/3">Multiplayer Game #3</Link>
+                            </NavDropdown.Item>
+                        </NavDropdown>
+                    </Form>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse>
                         <Nav className="mr-auto">
@@ -331,7 +334,7 @@ class Game extends React.Component {
                             </Form.Group>
                             <Form.Group controlId="exampleForm.ControlSelect1">
                                 <Form.Label>Background Image</Form.Label>
-                                <Form.Control value={this.state.selectedBackground} name="selectedBackground" onChange={this.handleChange}as="select">
+                                <Form.Control value={this.state.selectedBackground} name="selectedBackground" onChange={this.handleChange} as="select">
                                     <option value="amEx">AmEx</option>
                                     <option value="darkPattern">Dark Pattern</option>
                                     <option value="earth">Earth</option>
@@ -400,10 +403,10 @@ class Game extends React.Component {
                         {/* {this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast} */}
                         {/* {`${this.state.gameState[this.state.gameState.length - 1].guessWasCorrect}`} */}
 
-                        {this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast && this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast.slice(-10).map((item)=>{
-                            return <div>{item.playerName} {item.guessWasCorrect === 'true' ? <FcCheckmark/>:<FcCancel/>}</div>
+                        {this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast && this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast.slice(-10).map((item) => {
+                            return <div>{item.playerName} {item.guessWasCorrect === 'true' ? <FcCheckmark /> : <FcCancel />}</div>
                         }).reverse()}
-                        
+
                         {/* <div className="stats-header">Stats</div>
                         <div className="stat-line">Total Wins: {this.state.totalWins}</div>
                         <div className="stat-line">Total Losses: {this.state.totalLosses}</div>

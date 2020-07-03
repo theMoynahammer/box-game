@@ -1,5 +1,6 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Link } from 'react-router-dom';
 import { evaluateGuess, formatRemainingCardsCount } from '../logic-functions/helperFunctions';
 import { getInitialBoardAndCardsRemaining, getInitialState } from '../logic-functions/setUpInitialBoard';
 import Container from 'react-bootstrap/Container';
@@ -177,7 +178,23 @@ class Game extends React.Component {
                         height="30"
                         alt="The Box Game"
                     />
-                    <Navbar.Brand style={{ paddingLeft: '5px' }}>The Box Game</Navbar.Brand>
+                    {/* <Navbar.Brand style={{ paddingLeft: '5px' }}>The Box Game</Navbar.Brand> */}
+                    <Form inline>
+                        <NavDropdown title="The Box Game">
+                            <NavDropdown.Item>
+                                <Link className="dropdown-item" to="/">Single Player</Link>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Link className="dropdown-item" to="/multiplayer/1">Multiplayer Game #1</Link>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Link className="dropdown-item" to="/multiplayer/2">Multiplayer Game #2</Link>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <Link className="dropdown-item" to="/multiplayer/3">Multiplayer Game #3</Link>
+                            </NavDropdown.Item>
+                        </NavDropdown>
+                    </Form>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse>
                         <Nav className="mr-auto">
@@ -278,10 +295,10 @@ class Game extends React.Component {
                         {/* <div className="infoDiv"> */}
                         {/* <h5>Current Game Info</h5> */}
                         <CurrentGameInfo
-                            currentState={this.state.gameState[this.state.gameState.length-1]}
+                            currentState={this.state.gameState[this.state.gameState.length - 1]}
                             previousGuess={this.previousGuess}
-                            resetGame={(rageQuit)=>this.resetGame(rageQuit)}
-                            />
+                            resetGame={(rageQuit) => this.resetGame(rageQuit)}
+                        />
                         <hr className="custom-hr" />
                         <div className="stats-header">Stats</div>
                         <div className="stat-line">Total Wins: {this.state.totalWins}</div>
@@ -292,7 +309,7 @@ class Game extends React.Component {
                         <div className="stat-line">Winning Percentage: {this.state.totalWins + this.state.totalLosses !== 0 ? Number(this.state.totalWins / (this.state.totalWins + this.state.totalLosses)).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 }) : 'N/A'}</div>
                         <div className="stat-line">Current Streak: {this.currentStreakNumber ? `${this.currentStreakNumber} ${this.currentStreakType} in a row` : 'N/A'}</div>
                         <div className="stat-line">Rage Quits: {this.state.rageQuits}</div>
-                        <Button className="info-div-buttons" variant="outline-warning" size="sm" onClick={() => this.toggleModal('showStatResetModal')}>Reset Stats</Button>    
+                        <Button className="info-div-buttons" variant="outline-warning" size="sm" onClick={() => this.toggleModal('showStatResetModal')}>Reset Stats</Button>
                         <hr className="custom-hr" />
                         <div id="unlockables-section">
                             <div className="stats-header">Unlockables</div>
