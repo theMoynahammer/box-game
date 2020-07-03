@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { evaluateGuess, formatRemainingCardsCount } from '../logic-functions/helperFunctions';
 import { getInitialBoardAndCardsRemaining, getInitialState } from '../logic-functions/setUpInitialBoard';
@@ -245,7 +246,20 @@ class Game extends React.Component {
                         height="30"
                         alt="The Box Game"
                     />
-                    <Navbar.Brand style={{ paddingLeft: '5px' }}>The Box Game</Navbar.Brand>
+                    {/* <Navbar.Brand style={{ paddingLeft: '5px' }}>The Box Game</Navbar.Brand> */}
+                    <Form inline>
+                            <NavDropdown title="The Box Game">
+                                <NavDropdown.Item>
+                                    <Link className="dropdown-item" to="/multiplayer/1">Multiplayer Game #1</Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item>
+                                    <Link className="dropdown-item" to="/multiplayer/2">Multiplayer Game #2</Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item>
+                                    <Link className="dropdown-item" to="/multiplayer/3">Multiplayer Game #3</Link>
+                                    </NavDropdown.Item>
+                            </NavDropdown>
+                        </Form>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse>
                         <Nav className="mr-auto">
@@ -262,7 +276,7 @@ class Game extends React.Component {
                         </div>
 
                         {/* <Form inline>
-                            <NavDropdown title="Background">
+                            <NavDropdown title="The Box Game">
                                 <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('amEx')}>AmEx</NavDropdown.Item>
                                 <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('darkPattern')}>Dark Pattern</NavDropdown.Item>
                                 <NavDropdown.Item className="dropdown-item" onClick={() => this.setBackground('earth')}>Earth</NavDropdown.Item>

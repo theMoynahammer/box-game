@@ -130,6 +130,7 @@ ol, ul {
 } */
 .dropdown-item{
   font-size: .8em;
+  color: black;
 }
 
 .board-row {
