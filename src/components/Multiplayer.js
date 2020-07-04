@@ -55,7 +55,7 @@ class Game extends React.Component {
     }
 
     previousCard = null;
-    previousGuess = null;
+    // previousGuess = null;
     cardDrawn = null;
     numberOfSamesies = 0;
     formattedCardsRemainingList = null;
@@ -115,13 +115,12 @@ class Game extends React.Component {
     handleGuessAndManageState(i, higherLowerOrSamesies) {
         const currentState = { ...this.state.gameState[this.state.gameState.length - 1] };
         const { newState } = evaluateGuess(i, higherLowerOrSamesies, currentState);
-        const { cardDrawn, previousCard, numberOfSamesies, previousGuess, gameLost, gameWon, previousCardImageUrl, currentCardImageUrl } = newState;
+        const { cardDrawn, previousCard, numberOfSamesies, gameLost, gameWon, previousCardImageUrl, currentCardImageUrl } = newState;
         if (gameLost) this.handleWinLossStats(false);
         if (gameWon) this.handleWinLossStats(true);
         this.cardDrawn = cardDrawn;
         this.previousCard = previousCard;
         this.numberOfSamesies = numberOfSamesies;
-        this.previousGuess = previousGuess;
         newState.playersWhoGuessedLast = [...currentState.playersWhoGuessedLast ? currentState.playersWhoGuessedLast : [], { playerName: this.state.playerName, guessWasCorrect: newState.guessWasCorrect.toString() }]
         // newState.playersWhoGuessedLast =  this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast && this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast.length === 0?
         //     [this.state.playerName] : [...this.state.gameState[this.state.gameState.length - 1].playersWhoGuessedLast, ...this.state.playerName];
@@ -155,7 +154,7 @@ class Game extends React.Component {
                 this.handleWinLossStats(false);
             });
         };
-        this.previousGuess = null;
+        // this.previousGuess = null;
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         const initialState = getInitialState(cardsRemaining, initialBoard);
         this.emitToSocket(initialState)
@@ -395,7 +394,7 @@ class Game extends React.Component {
                     <Col xs={12} sm={4} className="infoDiv">
                         <CurrentGameInfo
                             currentState={this.state.gameState[this.state.gameState.length - 1]}
-                            previousGuess={this.previousGuess}
+                            // previousGuess={this.previousGuess}
                             resetGame={(rageQuit) => this.resetGame(rageQuit)}
                         />
                         <hr className="custom-hr" />
