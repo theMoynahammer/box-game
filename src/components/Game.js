@@ -1,5 +1,5 @@
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { evaluateGuess, formatRemainingCardsCount } from '../logic-functions/helperFunctions';
 import { getInitialBoardAndCardsRemaining, getInitialState } from '../logic-functions/setUpInitialBoard';
@@ -9,16 +9,15 @@ import Row from 'react-bootstrap/Row';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
+// import FormControl from 'react-bootstrap/FormControl';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import ResponsiveEmbed from 'react-bootstrap/ResponsiveEmbed';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { FaQuestion, FaStickyNote } from 'react-icons/fa';
 import { Board } from './Board';
-import Modals from './Modals';
+// import Modals from './Modals';
 import CurrentGameInfo from './CurrentGameInfo';
 
 class Game extends React.Component {

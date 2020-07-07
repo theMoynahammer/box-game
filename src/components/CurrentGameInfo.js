@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Button from 'react-bootstrap/Button';
 import { GoArrowUp, GoArrowDown } from 'react-icons/go';
 import { FaArrowLeft } from 'react-icons/fa'
@@ -8,7 +8,6 @@ const CurrentGameInfo = ({ currentState, resetGame }) => {
         <img className="cards-remaining-card" src={process.env.PUBLIC_URL + `/cardback.jpg`} alt="not found :("></img>
     );
 
-
     return (
         <div id="current-game-info">
             <div className="card-remaining-icon-div">{cardsRemainingIcons}</div>
@@ -16,7 +15,7 @@ const CurrentGameInfo = ({ currentState, resetGame }) => {
             <div id="players-guess">
                     {currentState.playersWhoGuessedLast[currentState.playersWhoGuessedLast.length - 1].playerName}'s guess
                 </div>
-                <table class="table table-override-cards">
+                {/* <table class="table table-override-cards">
                     <tbody>
                         <tr className="guess-tr">
                             <td className="guess-td guess-td-top">Previous</td>
@@ -29,7 +28,7 @@ const CurrentGameInfo = ({ currentState, resetGame }) => {
                             <td className="guess-td"><img className="card-images-guess" src={currentState.currentCardImageUrl} /></td>
                         </tr>
                     </tbody>
-                </table>
+                </table> */}
                 
             </div>}
             <Button className="info-div-buttons" variant="outline-danger" size="sm" onClick={() => resetGame(true)}>Rage Quit</Button>

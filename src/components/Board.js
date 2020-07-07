@@ -1,4 +1,5 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Square } from './Square';
@@ -34,6 +35,8 @@ class Board extends React.Component {
                 backgroundPosition: 'center',
                 backgroundImage: `url(${process.env.PUBLIC_URL}/${this.backgroundImageNames[this.props.selectedBackground]})`,
                 padding: '10px 0px' }}>
+                    {/* <Container fluid> */}
+                    <Container fluid>
                 <Row className="refactored-row">
                     {/* TODO use card-box class and center everything */}
                     <Col className="col-override">
@@ -68,6 +71,8 @@ class Board extends React.Component {
                         {this.renderSquare(8)}
                     </Col>
                 </Row>
+                </Container>
+                {/* </Container> */}
             </div>
         );
     }
