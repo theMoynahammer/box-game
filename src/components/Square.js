@@ -12,9 +12,9 @@ function Square(props) {
 
         //     {props.spotIsStillValid ? <div onClick={props.guessLower} className="lower-button"></div> : null}
         // </div>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div style={{position: 'relative',display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             {props.spotIsStillValid && <div onClick={props.guessHigher} className="higher-button"></div>}
-            <Image style={{ maxWidth: '150px', width: '70%', ...(props.imgPath.includes('cardback') ? { borderRadius: '4%' } : {}) }} src={props.imgPath} alt="nothing loaded :(" ></Image>
+            <Image style={{ width: '70%', ...(props.imgPath.includes('cardback') ? { borderRadius: '4%' } : {}) }} src={props.imgPath} alt="nothing loaded :(" ></Image>
             {props.spotIsStillValid && <div onClick={props.guessLower} className="lower-button"></div>}
         </div>
     );

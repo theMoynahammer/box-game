@@ -5,17 +5,38 @@ body {
 }
 
 html,body {
-  height: 100vh;
+  height: 100%;
+  /* overflow: hidden;   */
 }
 
-@media screen and (orientation:portrait) {
-  /* .game-board{
-    bottom: 0px;
-    position: absolute;
-  }
-  html,body,#root,#main-container{
-    height:97%;
-  } */
+
+#main-container{
+  display: flex;
+  flex-direction: row;
+}
+
+#info-pane{
+  width: 40%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /* align-items: center; */
+}
+
+#main-board{
+  width: 60%;
+  height: 100%;
+}
+
+.board-row{
+  /* height: 30%; */
+  display: flex;
+  flex: 1 1 auto;
+  /* min-width: 80vw; */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
 }
 
 .container-override {
@@ -30,7 +51,12 @@ html,body {
   flex: 0 0 25em; */
 }
 
-#current-game-info {}
+#current-game-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
 #stats-section {}
 
@@ -79,7 +105,9 @@ html,body {
 }
 
 .info-div-buttons {
-  font-size: .5rem;
+  font-size: .4rem;
+  height: 20px;
+  /* float: right; */
 }
 
 #previous-guess-info {
@@ -173,13 +201,13 @@ ol, ul {
   color: black;
 }
 
-.board-row {
+/* .board-row {
   display: flex;
   flex: 1 1 auto;
   min-width: 80vw;
   justify-content: space-between;
   align-items: center;
-}
+} */
 
 .refactored-row {
   margin-bottom: 5px;
@@ -252,7 +280,7 @@ ol, ul {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 0px 15px;
+  /* padding: 0px 15px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -280,7 +308,7 @@ ol, ul {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 0px 15px;
+  /* padding: 0px 15px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -290,12 +318,12 @@ ol, ul {
 
 .higher-button {
   top: 0;
-  left: 19.5%;
+  width: 70%;
   height: 50%;
+  border-radius: 4%;
   position: absolute;
   background-color: 'transparent';
   z-index: 10;
-  width: 60%;
 }
 
 a {
@@ -308,12 +336,12 @@ a:hover {
 
 .lower-button {
   bottom: 0;
-  left: 19.5%;
+  width: 70%;
   height: 50%;
+  border-radius: 4%;
   position: absolute;
   background-color: 'transparent';
   z-index: 10;
-  width: 60%;
 }
 
 .card-box {
@@ -383,3 +411,35 @@ a:hover {
   display: flex;
   flex: 1 1 auto;
 } */
+
+@media screen and (orientation:portrait) {
+  /* .game-board{
+    bottom: 0px;
+    position: absolute;
+  }
+  html,body,#root,#main-container{
+    height:97%;
+  } */
+
+  #root,#main-container{
+    height: 100%;
+    overflow: hidden;
+  }
+  #main-container{
+    flex-direction: column;
+  }
+  #info-pane{
+    width: 100%;
+    height: 40%;
+  }
+  #main-board{
+    width: 100%;
+
+    /* position: fixed;
+    bottom: 0; */
+  }
+  #main-game-board{
+    position: absolute;
+    bottom: 0;
+  }
+}

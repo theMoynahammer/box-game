@@ -23,6 +23,7 @@ const stateFormat = {
     cardDrawn: null,
     previousCard: null,
     previousGuess: null,
+    playersInSession: [],
 };
 
 const getInitialBoardAndCardsRemaining = () => {
