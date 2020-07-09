@@ -176,7 +176,13 @@ class Game extends React.Component {
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         const initialState = getInitialState(cardsRemaining, initialBoard);
         // initialState.playersInSession = [];
-        initialState.playersInSession = this.state.gameState[this.state.gameState.length - 1].playersInSession;
+        const oldPlayersInSessionWithStats = this.state.gameState[this.state.gameState.length - 1].playersInSession;
+        const withoutStats = oldPlayersInSessionWithStats.map((person)=>{
+            person.correctGuesses = 0;
+            person.incorrectGuesses = 0;
+            return person;
+        })
+        initialState.playersInSession = withoutStats;
         this.emitToSocket(initialState)
     }
 

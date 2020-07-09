@@ -31,7 +31,8 @@ const CurrentGameInfo = ({ currentState, resetGame }) => {
                 </table>
 
             </div>} */}
-            <Button className="info-div-buttons" variant="outline-danger" size="sm" onClick={() => resetGame(true)}>Rage Quit</Button>
+            <Button className="info-div-buttons" variant="outline-danger" size="sm" onClick={() => window.location.reload()}>Leave Session</Button>
+            {/* <Button className="info-div-buttons" variant="outline-danger" size="sm" onClick={() => resetGame(true)}>Rage Quit</Button> */}
         </div>
     );
 }
