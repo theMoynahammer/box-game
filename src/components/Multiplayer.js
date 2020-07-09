@@ -171,7 +171,7 @@ class Game extends React.Component {
         });
     }
 
-    resetGame = () => {
+    resetGame = (clearAllState) => {
         // this.previousGuess = null;
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         const initialState = getInitialState(cardsRemaining, initialBoard);
@@ -182,8 +182,9 @@ class Game extends React.Component {
             person.incorrectGuesses = 0;
             return person;
         })
-        initialState.playersInSession = withoutStats;
+        initialState.playersInSession = clearAllState ? [] : withoutStats;
         this.emitToSocket(initialState)
+        alert("Please refresh the page. I haven't fixed this yet")
     }
 
     handleChange = (e) => {
@@ -295,12 +296,7 @@ class Game extends React.Component {
                     playerName={this.state.playerName}
                     playerInfoReceived={this.state.playerInfoReceived}
                 />
-                {this.state.sessionId && <div style={{
-                    ...((!this.state.isItPlayersTurn
-                        && !this.state.gameState[this.state.gameState.length - 1].gameWon
-                        && !this.state.gameState[this.state.gameState.length - 1].gameLost)
-                        && { pointerEvents: 'none' })
-                }} id="main-container">
+                {this.state.sessionId && <div id="main-container">
                     <div id="info-pane">
                         {/* <GuessHistory currentState={this.state.gameState[this.state.gameState.length - 1]} /> */}
                         <CurrentGameInfo
@@ -310,7 +306,12 @@ class Game extends React.Component {
                         />
                         <PlayersInGame currentState={this.state.gameState[this.state.gameState.length - 1]} />
                     </div>
-                    <div id="main-board">
+                    <div id="main-board" style={{
+                    ...((!this.state.isItPlayersTurn
+                        && !this.state.gameState[this.state.gameState.length - 1].gameWon
+                        && !this.state.gameState[this.state.gameState.length - 1].gameLost)
+                        && { pointerEvents: 'none' })
+                }}>
                         {this.state.gameState[this.state.gameState.length - 1].gameLost === true &&
                             <div className="you-lose-overlay">
                                 <div className="you-lose-modal">

@@ -110,6 +110,13 @@ html,body {
   /* float: right; */
 }
 
+.info-div-buttons-top{
+  font-size: .4rem;
+  height: 20px;
+  /* float: right; */
+  margin-bottom: 5px;
+}
+
 #previous-guess-info {
   display: flex;
   justify-content: left;
