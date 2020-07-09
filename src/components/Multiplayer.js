@@ -184,7 +184,10 @@ class Game extends React.Component {
         })
         initialState.playersInSession = clearAllState ? [] : withoutStats;
         this.emitToSocket(initialState)
-        alert("Please refresh the page. I haven't fixed this yet")
+        if(clearAllState){
+            alert("Please refresh the page. I haven't fixed this yet")
+        }
+        
     }
 
     handleChange = (e) => {

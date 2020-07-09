@@ -8,7 +8,7 @@ const PlayersInGame = ({ currentState }) => {
             {currentState.playersInSession.map((person)=>{
                 return <div style={{...(person.activePlayer && {color: 'blue'})}}>
                     {person.activePlayer && '(active) '}{person.playerName}
-            {` Correct: ${person.correctGuesses} Incorrect: ${person.incorrectGuesses}`}
+            {` - Correct: ${person.correctGuesses} Incorrect: ${person.incorrectGuesses}`}
                     </div>
             })}
             {/* </div> */}
