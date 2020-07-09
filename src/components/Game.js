@@ -435,13 +435,13 @@ class Game extends React.Component {
                                 </div>
                             </div>
                         }
-                        <Board
+                        {/* <Board
                             // style={{    flex: '1 1 auto',
                             //     minWidth: '0'}}
                             squares={this.state.gameState[this.state.gameState.length - 1].currentBoard}
                             evaluateGuess={(i, higherLowerOrSamesies) => this.handleGuessAndManageState(i, higherLowerOrSamesies)}
                             selectedBackground={this.state.selectedBackground}
-                        />
+                        /> */}
                     </Col>
                 </Row>
             </Container>
