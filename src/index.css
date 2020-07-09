@@ -1,7 +1,7 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
   /* margin: 20px; */
-  background: #D3D3D3;
+  /* background: #D3D3D3; */
 }
 
 html,body {
@@ -74,7 +74,7 @@ html,body {
   display: flex;
   /* flex-wrap: nowrap; */
   max-width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   /* flex-shrink: 0; */
   /* flex-direction: row-reverse; */
   /* justify-content: right; */

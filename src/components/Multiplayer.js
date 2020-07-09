@@ -23,19 +23,27 @@ const ENDPOINT = "https://morning-shore-03481.herokuapp.com"
 class Game extends React.Component {
     constructor(props) {
         super(props);
+        this.disconnectFromSession = this.disconnectFromSession.bind(this);
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         const initialState = getInitialState(cardsRemaining, initialBoard);
-        window.addEventListener('beforeunload', this.componentCleanup);
+        // window.addEventListener('beforeunload', this.componentCleanup);
         this.state = {
             gameState: [initialState],
             // gameState: [null],
             modalToShow: null,
             playerName: null,
             selectedBackground: localStorage.getItem('backgroundPreference') || 'amEx',
+            isItPlayersTurn: false,
         }
     }
 
     componentDidMount() {
+        window.onbeforeunload = function () {
+            // this.onUnload();
+            console.log("WE HERE")
+            this.disconnectFromSession();
+            // return "";
+        }.bind(this)
         // window.addEventListener('beforeunload', this.componentCleanup);
         this.connectToSocket();
         if (!this.state.playerName) {
@@ -58,16 +66,52 @@ class Game extends React.Component {
         this.socket.on(`newState${this.props.gameNumber}`, newState => {
             this.setState({
                 gameState: [...this.state.gameState, newState],
+                isItPlayersTurn: this.isItPlayersTurnFunction(newState),
             })
         });
     }
-// TODO how to remove olayer from session when they quit.
-    // componentCleanup(){
-    //     alert('ok')
-    //     const currentState = this.state.gameState[this.state.gameState.length - 1];
-    //     const indexOfPlayer = currentState.playersInSession.indexOf((item)=>item.sessionId === this.state.sessionId);
-    //     const stateWithPlayerRemoved = currentState.splice(indexOfPlayer, 1);
-    //     this.emitToSocket(stateWithPlayerRemoved);
+
+    isItPlayersTurnFunction = (stateToCompareWith) => {
+
+        const playersInSession = stateToCompareWith.playersInSession;
+
+        const indexOfActivePlayer = playersInSession.findIndex((person) => {
+            return person.activePlayer === true;
+        });
+
+        console.log(JSON.stringify(playersInSession), indexOfActivePlayer)
+
+        if (!stateToCompareWith.gameWon && !stateToCompareWith.gameLost && indexOfActivePlayer!== -1) {
+            if (playersInSession[indexOfActivePlayer].sessionId === this.state.sessionId) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    disconnectFromSession() {
+        const currentState = this.state.gameState[this.state.gameState.length - 1];
+        const indexOfPlayer = currentState.playersInSession.findIndex((item) => {
+            return item.sessionId === this.state.sessionId
+        });
+        if (currentState.playersInSession[indexOfPlayer].activePlayer === true) {
+            if (indexOfPlayer === currentState.playersInSession.length - 1 && currentState.playersInSession.length !== 1) {
+                currentState.playersInSession[0].activePlayer = true;
+            } else if (currentState.playersInSession.length === 1) {
+                currentState.playersInSession[indexOfPlayer].activePlayer = true;
+            } else {
+                currentState.playersInSession[indexOfPlayer + 1].activePlayer = true;
+            }
+        }
+        currentState.playersInSession.splice(indexOfPlayer, 1);
+        this.emitToSocket(currentState);
+    }
+
+    // componentWillUnmount(){
+    //     console.log('here')
     // }
 
     // componentWillUnmount() {
@@ -93,9 +137,32 @@ class Game extends React.Component {
         this.cardDrawn = cardDrawn;
         this.previousCard = previousCard;
         this.numberOfSamesies = numberOfSamesies;
+        const indexOfActivePlayer = currentState.playersInSession.findIndex((person) => person.activePlayer === true);
+        const lengthOfPlayersIndex = currentState.playersInSession.length;
+
+        if (newState.guessWasCorrect) {
+            newState.playersInSession[indexOfActivePlayer].correctGuesses++;
+        }
+        else {
+            newState.playersInSession[indexOfActivePlayer].incorrectGuesses++;
+        }
+
+        if (indexOfActivePlayer === lengthOfPlayersIndex - 1) {
+            // keep these two in this order please
+            newState.playersInSession[indexOfActivePlayer].activePlayer = false;
+            newState.playersInSession[0].activePlayer = true;
+        } else {
+            newState.playersInSession[indexOfActivePlayer].activePlayer = false;
+            newState.playersInSession[indexOfActivePlayer + 1].activePlayer = true;
+        }
         newState.playersWhoGuessedLast = [...currentState.playersWhoGuessedLast ? currentState.playersWhoGuessedLast : [], { playerName: this.state.playerName, guessWasCorrect: newState.guessWasCorrect.toString() }]
         this.formattedCardsRemainingList = formatRemainingCardsCount(newState.cardsRemaining)
-        this.emitToSocket(newState)
+        this.setState({
+            isItPlayersTurn: this.isItPlayersTurnFunction(newState),
+        }, () => {
+            this.emitToSocket(newState)
+        })
+
     }
 
     toggleModal = (modal, showModal) => {
@@ -108,6 +175,7 @@ class Game extends React.Component {
         // this.previousGuess = null;
         const { cardsRemaining, initialBoard } = getInitialBoardAndCardsRemaining();
         const initialState = getInitialState(cardsRemaining, initialBoard);
+        // initialState.playersInSession = [];
         initialState.playersInSession = this.state.gameState[this.state.gameState.length - 1].playersInSession;
         this.emitToSocket(initialState)
     }
@@ -119,32 +187,44 @@ class Game extends React.Component {
     savePlayerInfo = () => {
         if (this.state.playerName) {
             // if (!this.state.sessionId) {
-                this.setState((prevState)=> ({ sessionId: prevState.sessionId || uuidv4() }) , () => {
-                    this.toggleModal('playerInfo', false)
-                    const currentState = this.state.gameState[this.state.gameState.length - 1];
-                    const playerInfoObject = {
-                        playerName: this.state.playerName,
-                        sessionId: this.state.sessionId,
-                    }
-                    if (currentState.playersInSession) {
-                        // const isPlayerInArray = currentState.playersInSession.some((item) => {
-                        //     return item.sessionId === this.state.sessionId;
-                        // })
-                        const indexOfPlayerInArray = currentState.playersInSession.findIndex((item) => item.sessionId === this.state.sessionId);
-                        if (indexOfPlayerInArray < 0) {
-                            currentState.playersInSession.push(playerInfoObject)
-                        }else{
-                            currentState.playersInSession[indexOfPlayerInArray] = playerInfoObject;
-                        }
-
-                    } else {
-                        currentState.playersInSession = [playerInfoObject];
-                    }
-                    this.emitToSocket(currentState)
-                    // this.setState({
-                    //     playerInfoReceived: true,
+            this.setState((prevState) => ({ sessionId: prevState.sessionId || uuidv4() }), () => {
+                this.toggleModal('playerInfo', false)
+                const currentState = this.state.gameState[this.state.gameState.length - 1];
+                const playerInfoObject = {
+                    playerName: this.state.playerName,
+                    sessionId: this.state.sessionId,
+                    activePlayer: true,
+                    incorrectGuesses: 0,
+                    correctGuesses: 0,
+                }
+                if (currentState.playersInSession) {
+                    // const isPlayerInArray = currentState.playersInSession.some((item) => {
+                    //     return item.sessionId === this.state.sessionId;
                     // })
+                    const indexOfPlayerInArray = currentState.playersInSession.findIndex((item) => item.sessionId === this.state.sessionId);
+                    if (indexOfPlayerInArray < 0) {
+                        const playerInfoObjectNotActive = { ...playerInfoObject };
+                        playerInfoObjectNotActive.activePlayer = currentState.playersInSession.length === 0 ? true : false;
+                        currentState.playersInSession.push(playerInfoObjectNotActive)
+                    } else {
+                        currentState.playersInSession[indexOfPlayerInArray] = playerInfoObject;
+                    }
+
+                } else {
+                    currentState.playersInSession = [playerInfoObject];
+                }
+
+                this.setState({
+                    isItPlayersTurn: this.isItPlayersTurnFunction(currentState),
+                }, () => {
+                    this.emitToSocket(currentState)
                 })
+
+                // this.emitToSocket(currentState)
+                // this.setState({
+                //     playerInfoReceived: true,
+                // })
+            })
             // }
             // this.toggleModal('playerInfo', false)
             // const currentState = this.state.gameState[this.state.gameState.length - 1];
@@ -158,6 +238,7 @@ class Game extends React.Component {
         }
         localStorage.setItem('backgroundPreference', this.state.selectedBackground)
     }
+
 
     render() {
         return (
@@ -208,14 +289,19 @@ class Game extends React.Component {
                     playerName={this.state.playerName}
                     playerInfoReceived={this.state.playerInfoReceived}
                 />
-                {this.state.sessionId && <div id="main-container">
+                {this.state.sessionId && <div style={{
+                    ...((!this.state.isItPlayersTurn
+                        && !this.state.gameState[this.state.gameState.length - 1].gameWon
+                        && !this.state.gameState[this.state.gameState.length - 1].gameLost)
+                        && { pointerEvents: 'none' })
+                }} id="main-container">
                     <div id="info-pane">
-                        <GuessHistory currentState={this.state.gameState[this.state.gameState.length - 1]} />
+                        {/* <GuessHistory currentState={this.state.gameState[this.state.gameState.length - 1]} /> */}
                         <CurrentGameInfo
-                                        currentState={this.state.gameState[this.state.gameState.length - 1]}
-                                        // previousGuess={this.previousGuess}
-                                        resetGame={(rageQuit) => this.resetGame(rageQuit)}
-                                    />
+                            currentState={this.state.gameState[this.state.gameState.length - 1]}
+                            // previousGuess={this.previousGuess}
+                            resetGame={(rageQuit) => this.resetGame(rageQuit)}
+                        />
                         <PlayersInGame currentState={this.state.gameState[this.state.gameState.length - 1]} />
                     </div>
                     <div id="main-board">
