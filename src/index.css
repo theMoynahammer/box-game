@@ -390,7 +390,7 @@ a:hover {
   /* width: 300px; */
   /* max-width: 100%; */
   /* font-size: 12px; */
-  padding: 15px 0px 15px 30px;
+  padding: 15px 30px;
   font-size: calc(0.4em + 1vmin);
 }
 
@@ -433,7 +433,7 @@ a:hover {
   #root,
   #main-container {
     height: 100%;
-    overflow: hidden;
+    overflow: scroll;
   }
   #main-container {
     flex-direction: column;
