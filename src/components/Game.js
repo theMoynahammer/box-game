@@ -23,6 +23,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { FaQuestion, FaStickyNote } from "react-icons/fa";
 import { Board } from "./";
+import Image from "react-bootstrap/Image";
 // import Modals from './Modals';
 import CurrentGameInfo from "./CurrentGameInfo";
 
@@ -82,6 +83,8 @@ class Game extends React.Component {
     this.previousCard = previousCard;
     this.numberOfSamesies = numberOfSamesies;
     this.previousGuess = previousGuess;
+    this.previousCardImageUrl = previousCardImageUrl;
+    this.currentCardImageUrl = currentCardImageUrl;
     this.formattedCardsRemainingList = formatRemainingCardsCount(
       newState.cardsRemaining
     );
@@ -436,41 +439,98 @@ class Game extends React.Component {
               resetGame={(rageQuit) => this.resetGame(rageQuit)}
             />
             <hr className="custom-hr" />
-            <div className="stats-header">Stats</div>
-            <div className="stat-line">Total Wins: {this.state.totalWins}</div>
-            <div className="stat-line">
-              Total Losses: {this.state.totalLosses}
-            </div>
-            {/* <div className="stat-line">Winning Percentage: {this.state.totalWins+this.state.totalLosses !== 0 ? parseFloat((this.state.totalWins/(this.state.totalWins+this.state.totalLosses))).toFixed(2)+"%" : 'N/A'}</div> */}
-            {/* var s = Number(num/100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2});  */}
+            <div style={{ display: "flex" }}>
+              <div>
+                <div className="stats-header">Stats</div>
+                <div className="stat-line">
+                  Total Wins: {this.state.totalWins}
+                </div>
+                <div className="stat-line">
+                  Total Losses: {this.state.totalLosses}
+                </div>
+                {/* <div className="stat-line">Winning Percentage: {this.state.totalWins+this.state.totalLosses !== 0 ? parseFloat((this.state.totalWins/(this.state.totalWins+this.state.totalLosses))).toFixed(2)+"%" : 'N/A'}</div> */}
+                {/* var s = Number(num/100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2});  */}
 
-            <div className="stat-line">
-              Winning Percentage:{" "}
-              {this.state.totalWins + this.state.totalLosses !== 0
-                ? Number(
-                    this.state.totalWins /
-                      (this.state.totalWins + this.state.totalLosses)
-                  ).toLocaleString(undefined, {
-                    style: "percent",
-                    minimumFractionDigits: 2,
-                  })
-                : "N/A"}
+                <div className="stat-line">
+                  Winning Percentage:{" "}
+                  {this.state.totalWins + this.state.totalLosses !== 0
+                    ? Number(
+                        this.state.totalWins /
+                          (this.state.totalWins + this.state.totalLosses)
+                      ).toLocaleString(undefined, {
+                        style: "percent",
+                        minimumFractionDigits: 2,
+                      })
+                    : "N/A"}
+                </div>
+                <div className="stat-line">
+                  Current Streak:{" "}
+                  {this.currentStreakNumber
+                    ? `${this.currentStreakNumber} ${this.currentStreakType} in a row`
+                    : "N/A"}
+                </div>
+                <div className="stat-line">
+                  Rage Quits: {this.state.rageQuits}
+                </div>
+                <Button
+                  className="info-div-buttons"
+                  variant="outline-warning"
+                  size="sm"
+                  onClick={() => this.toggleModal("showStatResetModal")}
+                >
+                  Reset Stats
+                </Button>
+                <Button
+                  className="info-div-buttons"
+                  variant="outline-danger"
+                  size="sm"
+                  onClick={() => this.resetGame(true)}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Rage Quit
+                </Button>
+              </div>
+              <div style={{ marginLeft: "auto" }}>
+                {this.previousGuess && (
+                  <>
+                    You Guessed: {this.previousGuess}
+                    <br />
+                    <br />
+                  </>
+                )}
+                <div style={{ display: "flex" }}>
+                  {this.previousCardImageUrl && (
+                    <div style={{ marginRight: "20px" }}>
+                      Previous Card:
+                      <br />
+                      <Image
+                        style={{
+                          width: "50px",
+                          borderRadius: "4%",
+                        }}
+                        src={this.previousCardImageUrl}
+                        alt="nothing loaded :("
+                      />
+                    </div>
+                  )}
+                  {this.currentCardImageUrl && (
+                    <div>
+                      Card Drawn:
+                      <br />
+                      <Image
+                        style={{
+                          width: "50px",
+                          borderRadius: "4%",
+                          marginLeft: "10px",
+                        }}
+                        src={this.currentCardImageUrl}
+                        alt="nothing loaded :("
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="stat-line">
-              Current Streak:{" "}
-              {this.currentStreakNumber
-                ? `${this.currentStreakNumber} ${this.currentStreakType} in a row`
-                : "N/A"}
-            </div>
-            <div className="stat-line">Rage Quits: {this.state.rageQuits}</div>
-            <Button
-              className="info-div-buttons"
-              variant="outline-warning"
-              size="sm"
-              onClick={() => this.toggleModal("showStatResetModal")}
-            >
-              Reset Stats
-            </Button>
             <hr className="custom-hr" />
             <div id="unlockables-section">
               <div className="stats-header">Unlockables</div>
